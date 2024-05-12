@@ -36,6 +36,29 @@ Template: astra
   --ast-blog-meta-weight: inherit;
 }
 
+h1.page-title.line {
+  color: var(--ast-global-color-6);
+  width: fit-content;
+  font-size: 28px;
+  font-weight: 500;
+}
+
+h1.page-title.line::after {
+  display: block;
+  content: "";
+  height: 3px;
+  margin-top: 2px;
+  background-color: var(--ast-global-color-0);
+}
+
+#ast-scroll-top {
+  color: #000000;
+}
+
+.ast-button-wrap .mobile-menu-toggle-icon .ast-mobile-svg {
+  fill: #000000 !important;
+}
+
 .uabb-button {
   color: var(--ast-global-color-2) !important;
   border-color: var(--ast-global-color-0) !important;
@@ -113,6 +136,13 @@ div#content {
   padding: 2rem;
 }
 
+.ast-separate-container .ast-article-post,
+.ast-separate-container .ast-article-single,
+.ast-separate-container .comment-respond {
+  padding: 4em 4em;
+  border-radius: 10px;
+}
+
 /* remove the extra padding only from home */
 div#home-page {
   margin: -2rem;
@@ -123,7 +153,7 @@ div#home-page {
   display: none;
 }
 
-/* Deia Modal */
+/* Deia Modal -------------------------------------------- */
 .deia-modal {
   display: none;
   position: fixed;
@@ -206,8 +236,83 @@ div#home-page {
 .deia-open-modal.menu-item:hover > .menu-link:before {
   display: none;
 }
+/* Deia Modal -------------------------------------------- */
 
-@media (max-width: 921px) {
+/* Deia List of Categories ------------------------------- */
+article.deia-cat-list {
+  display: flex;
+  flex-direction: row;
+  background-color: rgba(68, 68, 68, 0.3);
+  border-radius: 0.5rem;
+  padding: 1.5rem;
+  margin-bottom: 1rem;
+  box-shadow: 7px 7px 10px rgba(0, 0, 0, 0.5);
+  transition: background-color 0.3s ease;
+}
+
+article.deia-cat-list:hover {
+  background-color: rgba(68, 68, 68, 0.4);
+}
+
+article.deia-cat-list .entry-thumbnail {
+  margin-right: 2rem;
+}
+
+article.deia-cat-list .entry-thumbnail a {
+  display: block;
+  background-size: cover;
+  background-position: center;
+  padding: 0;
+  margin: 0;
+  border-radius: 5px;
+  overflow: hidden;
+  box-shadow: 4px 4px 8px rgba(0, 0, 0, 0.5);
+}
+
+article.deia-cat-list .entry-thumbnail a img {
+  width: 10rem;
+  height: auto;
+  min-width: 10rem;
+}
+
+article.deia-cat-list .right-content {
+  display: flex;
+  flex-direction: column;
+  flex: 1 1 auto;
+}
+
+article.deia-cat-list .right-content h2 {
+  display: block;
+  overflow-wrap: anywhere;
+  font-size: 1.2rem;
+  padding-bottom: 0.4rem;
+  /* color: var(--ast-global-color-1); */
+}
+
+article.deia-cat-list .right-content p {
+  color: #fff;
+}
+
+article.deia-cat-list .right-content .share-icons {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+  gap: 0.5rem;
+  padding: 0;
+}
+
+article.deia-cat-list .right-content .share-icons a {
+  padding: 0.5rem;
+}
+
+article.deia-cat-list .right-content .share-icons a img {
+  width: 1.6rem;
+  height: 1.6rem;
+}
+/* Deia List of Categories ------------------------------- */
+
+/* Styles for extra small devices (phones) */
+@media (max-width: 576px) {
   div#content {
     padding: 1rem;
   }
@@ -230,4 +335,55 @@ div#home-page {
   .deia-modal-content {
     width: 94vw;
   }
+  .pagination {
+    padding: 0 0 4rem 1rem;
+  }
+
+  article.deia-cat-list {
+    flex-direction: column;
+    padding: 1rem;
+  }
+
+  article.deia-cat-list .entry-thumbnail {
+    margin-right: 0;
+    margin-bottom: 1rem;
+  }
+
+  article.deia-cat-list .right-content .share-icons {
+    margin-right: -10px;
+    margin-bottom: -10px;
+  }
+
+  article.deia-cat-list .entry-thumbnail a img {
+    width: fit-content;
+  }
 }
+
+/* Styles for small devices (tablets) */
+@media (max-width: 768px) {
+}
+
+/* Styles for medium devices (desktops) */
+@media (min-width: 768px) and (max-width: 1024px) {
+}
+
+/* Styles for large devices (desktops) */
+@media (min-width: 1024px) and (max-width: 1200px) {
+}
+
+/* Styles for extra large devices (large desktops) */
+@media (min-width: 1200px) {
+}
+
+@media (max-width: 992px) {
+}
+
+@media (min-width: 993px) {
+  .ast-separate-container #primary {
+    margin: 2.25rem auto 4em auto;
+    padding: 0;
+    max-width: 1140px;
+  }
+}
+
+/* padding: 2rem 2rem 4rem 2rem; */
