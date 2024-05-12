@@ -140,10 +140,10 @@ function display_youtube_data() {
         // Add pagination links based on nextPageToken and prevPageToken
         $output .= '<div class="pagination">';
         if (isset($videosData['prevPageToken'])) {
-            $output .= '<a href="?pageToken=' . $videosData['prevPageToken'] . '"><< Previous Page</a>';
+            $output .= '<a href="?pageToken=' . $videosData['prevPageToken'] . '" class="prev">← Previous Page</a>';
         }
         if (isset($videosData['nextPageToken'])) {
-            $output .= '<a href="?pageToken=' . $videosData['nextPageToken'] . '">Next Page >></a>';
+            $output .= '<a href="?pageToken=' . $videosData['nextPageToken'] . '" class="next">Next Page →</a>';
         }
         $output .= '</div>';
 
