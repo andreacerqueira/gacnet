@@ -1,0 +1,233 @@
+/**
+Theme Name: Astra Child
+Author: Andrea Amado
+Author URI: http://wpastra.com/about/
+Description: Astra is the fastest, fully customizable & beautiful theme suitable for blogs, personal portfolios and business websites. It is very lightweight (less than 50KB on frontend) and offers unparalleled speed. Built with SEO in mind, Astra comes with schema.org code integrated so search engines will love your site. Astra offers plenty of sidebar options and widget areas giving you a full control for customizations. Furthermore, we have included special features and templates so feel free to choose any of your favorite page builder plugin to create pages flexibly. Some of the other features: # WooCommerce Ready # Responsive # Compatible with major plugins # Translation Ready # Extendible with premium addons # Regularly updated # Designed, Developed, Maintained & Supported by Brainstorm Force. Looking for a perfect base theme? Look no further. Astra is fast, fully customizable and beautiful theme!
+Version: 1.0.0
+License: GNU General Public License v2 or later
+License URI: http://www.gnu.org/licenses/gpl-2.0.html
+Text Domain: astra-child
+Template: astra
+*/
+
+:root {
+  --ast-global-color-0: #fbc051;
+  --ast-global-color-1: #0e8ec1;
+  --ast-global-color-2: #1e2e3b;
+  --ast-global-color-3: #324854;
+  --ast-global-color-4: #f9fafb;
+  --ast-global-color-5: #ffffff;
+  --ast-global-color-6: #e2e8f0;
+  --ast-global-color-7: #cbd5e1;
+  --ast-global-color-8: #94a3b8;
+
+  --ast-container-default-xlg-padding: 6.67em;
+  --ast-container-default-lg-padding: 5.67em;
+  --ast-container-default-slg-padding: 4.34em;
+  --ast-container-default-md-padding: 3.34em;
+  --ast-container-default-sm-padding: 6.67em;
+  --ast-container-default-xs-padding: 2.4em;
+  --ast-container-default-xxs-padding: 1.4em;
+  --ast-code-block-background: #eeeeee;
+  --ast-comment-inputs-background: #fafafa;
+  --ast-normal-container-width: 1200px;
+  --ast-narrow-container-width: 750px;
+  --ast-blog-title-font-weight: normal;
+  --ast-blog-meta-weight: inherit;
+}
+
+.uabb-button {
+  color: var(--ast-global-color-2) !important;
+  border-color: var(--ast-global-color-0) !important;
+  border-radius: 50px !important;
+  background-color: var(--ast-global-color-0) !important;
+  box-shadow: 0px 0px 0px 0px rgba(0, 0, 0, 0.1) !important;
+  padding: 8px 26px !important;
+  font-size: 15px !important;
+  font-weight: bold !important;
+  text-decoration: none !important;
+  text-transform: uppercase !important;
+  cursor: pointer !important;
+  transition: all 200ms linear !important;
+}
+
+.uabb-button:hover {
+  color: var(--ast-global-color-5) !important;
+  border-color: var(--ast-global-color-1) !important;
+  background-color: var(--ast-global-color-1) !important;
+}
+
+.uabb-button:hover .uabb-button-text {
+  color: var(--ast-global-color-5) !important;
+}
+
+.uabb-button-text {
+  color: var(--ast-global-color-2) !important;
+}
+
+.site-header.ast-header-slide {
+  background-color: none;
+}
+
+.site-header.ast-header-slide.ast-sticky-active.ast-header-sticked {
+  background-color: #181818;
+}
+
+.ast-primary-header-bar,
+.main-header-bar {
+  background-color: unset;
+}
+
+.ast-header-break-point .main-header-menu {
+  background-color: unset;
+}
+
+.ast-mobile-header-wrap .ast-mobile-header-content,
+.ast-desktop-header-content {
+  background-color: unset;
+}
+
+.ast-header-break-point .main-header-menu {
+  border-color: var(--ast-global-color-2);
+}
+
+.ast-header-break-point .main-navigation ul .menu-item .menu-link {
+  border: none;
+}
+
+.ast-builder-menu-1 .main-header-menu .menu-item > .menu-link {
+  color: var(--ast-global-color-5);
+}
+
+.ast-builder-menu-1 .menu-item.current-menu-item > .menu-link,
+.ast-builder-menu-1
+  .inline-on-mobile
+  .menu-item.current-menu-item
+  > .ast-menu-toggle,
+.ast-builder-menu-1 .current-menu-ancestor > .menu-link,
+.ast-builder-menu-1 .current-menu-ancestor > .ast-menu-toggle {
+  color: var(--ast-global-color-0);
+}
+
+div#content {
+  padding: 2rem;
+}
+
+/* remove the extra padding only from home */
+div#home-page {
+  margin: -2rem;
+}
+
+/* Add this CSS to your stylesheet */
+.hide-on-front-page {
+  display: none;
+}
+
+/* Deia Modal */
+.deia-modal {
+  display: none;
+  position: fixed;
+  z-index: 1000;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: rgba(0, 0, 0, 0.8);
+}
+
+/* Wrap to align */
+.deia-modal-wrapper {
+  display: flex;
+  width: 100%;
+  height: 100%;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Modal content */
+.deia-modal-content {
+  background-color: #171718;
+  margin: auto;
+  padding: 2rem;
+  width: 80vw;
+  border-radius: 1rem;
+  box-shadow: 7px 7px 10px rgba(0, 0, 0, 0.9);
+}
+
+.deia-post-content {
+  display: block;
+  width: 100%;
+}
+
+/* Close button */
+.deia-modal-content .close {
+  color: var(--ast-global-color-0);
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
+}
+
+.deia-modal-content .close:hover,
+.deia-modal-content .close:focus {
+  color: var(--ast-global-color-1);
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.deia-open-modal.menu-item {
+  padding-left: 10px;
+  line-height: normal;
+}
+
+.deia-open-modal a.menu-link {
+  color: var(--ast-global-color-2);
+  border-color: var(--ast-global-color-1);
+  border-radius: 50px;
+  background-color: var(--ast-global-color-1);
+  box-shadow: 0px 0px 0px 0px rgba(0, 0, 0, 0.1);
+  padding: 8px 26px;
+  max-height: 50px !important;
+  font-size: 15px;
+  font-weight: bold;
+  text-decoration: none;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: all 200ms linear;
+}
+
+.deia-open-modal a.menu-link:hover {
+  color: var(--ast-global-color-2) !important;
+  border-color: var(--ast-global-color-0);
+  background-color: var(--ast-global-color-0);
+  transition: all 200ms linear;
+}
+
+.deia-open-modal.menu-item:hover > .menu-link:before {
+  display: none;
+}
+
+@media (max-width: 921px) {
+  div#content {
+    padding: 1rem;
+  }
+
+  /* remove the extra padding only from home */
+  div#home-page {
+    margin: -1rem;
+  }
+
+  .deia-open-modal a.menu-link {
+    border: unset !important;
+    background-color: unset !important;
+  }
+
+  .deia-open-modal.menu-item {
+    padding-left: unset !important;
+    line-height: unset !important;
+  }
+
+  .deia-modal-content {
+    width: 94vw;
+  }
+}
