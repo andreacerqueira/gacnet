@@ -59,6 +59,60 @@ h1.page-title.line::after {
   fill: #000000 !important;
 }
 
+article.post,
+article.type-post,
+article.status-publish {
+  background-color: #101010 !important;
+}
+
+input[type="email"],
+input[type="number"],
+input[type="password"],
+input[type="reset"],
+input[type="search"],
+input[type="tel"],
+input[type="text"],
+input[type="url"],
+select,
+textarea {
+  color: #fff;
+  padding: 0.75em;
+  height: auto;
+  border-width: 1px;
+  border-style: solid;
+  border-color: #202427;
+  border-radius: 6px;
+  background: #222528;
+  box-shadow: none;
+  box-sizing: border-box;
+  transition: all 0.2s linear;
+}
+
+input[type="email"]:focus,
+input[type="password"]:focus,
+input[type="reset"]:focus,
+input[type="search"]:focus,
+input[type="tel"]:focus,
+input[type="text"]:focus,
+input[type="url"]:focus,
+select:focus,
+textarea:focus {
+  color: #fff;
+  background-color: #000;
+  border-color: #272727;
+  border-radius: 6px;
+  box-shadow: none;
+}
+
+#comments .submit,
+.search .search-submit {
+  padding: 10px 20px;
+  border-radius: 30px;
+  line-height: 1.85714285714286;
+  border: 0;
+  transition: all 0.2s linear;
+}
+
 .uabb-button {
   color: var(--ast-global-color-2) !important;
   border-color: var(--ast-global-color-0) !important;
@@ -313,6 +367,12 @@ article.deia-cat-list .right-content .share-icons a img {
 
 /* Styles for extra small devices (phones) */
 @media (max-width: 576px) {
+  .ast-separate-container .ast-article-post,
+  .ast-separate-container .ast-article-single,
+  .ast-separate-container .comment-respond {
+    padding: 1em 1em;
+  }
+
   div#content {
     padding: 1rem;
   }
