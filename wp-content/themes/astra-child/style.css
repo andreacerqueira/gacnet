@@ -59,12 +59,6 @@ h1.page-title.line::after {
   fill: #000000 !important;
 }
 
-article.post,
-article.type-post,
-article.status-publish {
-  background-color: #101010 !important;
-}
-
 input[type="email"],
 input[type="number"],
 input[type="password"],
