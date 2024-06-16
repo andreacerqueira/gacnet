@@ -15,6 +15,21 @@ function deia_add_musician_role() {
 }
 add_action('init', 'deia_add_musician_role');
 
+// Ensure the musician role has the required capabilities
+function deia_add_musician_capabilities() {
+    $role = get_role('musician');
+    if (!$role) {
+        return; // Role not registered yet
+    }
+    $role->add_cap('read');
+    $role->add_cap('edit_posts');
+    $role->add_cap('edit_published_posts');
+    $role->add_cap('delete_posts');
+    $role->add_cap('publish_posts');
+    $role->add_cap('upload_files');
+}
+add_action('admin_init', 'deia_add_musician_capabilities');
+
 // Hide admin menu items for musicians and add a custom page for musicians
 function deia_customize_musician_admin_menu() {
     if (current_user_can('musician')) {
@@ -37,21 +52,19 @@ function deia_customize_musician_admin_menu() {
         );
     }
 }
-add_action('admin_menu', 'deia_customize_musician_admin_menu');
+add_action('admin_menu', 'deia_customize_musician_admin_menu', 99); // High priority
 
 // Disable block editor for musicians
 function deia_disable_block_editor_for_musician($use_block_editor, $post_type) {
-    if ('post' === $post_type && current_user_can('musician')) {
+    if (current_user_can('musician')) {
         return false; // Disable block editor for musicians
     }
     return $use_block_editor; // Use default behavior for other users or post types
 }
 add_filter('use_block_editor_for_post', 'deia_disable_block_editor_for_musician', 10, 2);
 
-
 // Redirect musicians to their custom page upon login
 function deia_redirect_musician_dashboard() {
-    // Check if the current user is a musician and not trying to access musician_profile page
     if (current_user_can('musician') && !isset($_GET['page']) && $_GET['page'] !== 'musician_profile' && !isset($_GET['post'])) {
         wp_redirect(admin_url('admin.php?page=musician_profile'));
         exit;
@@ -71,11 +84,9 @@ function deia_display_musician_posts() {
     );
 
     $query = new WP_Query($args);
-
-    // var_dump($query);
     
     if ($query->have_posts()) {
-        echo '<h2>Your Posts</h2>';
+        echo '<h2>Musicians/Bands</h2>';
         echo '<ul>';
         while ($query->have_posts()) {
             $query->the_post();
@@ -107,7 +118,6 @@ function deia_musician_profile_form() {
 
     if (isset($_POST['submit_user_profile'])) {
         $user_id = get_current_user_id();
-        $user_login = sanitize_text_field($_POST['user_login']);
         $user_email = sanitize_email($_POST['user_email']);
         $user_pass = $_POST['user_pass'];
         $user_pass_confirm = $_POST['user_pass_confirm'];
@@ -164,28 +174,6 @@ function deia_musician_profile_page() {
     echo '</div>';
 }
 
-// Handle saving user profile changes
-function deia_save_user_profile() {
-    if (isset($_POST['submit_user_profile'])) {
-        $user_id = get_current_user_id();
-
-        if (isset($_POST['user_email'])) {
-            $user_email = sanitize_email($_POST['user_email']);
-            wp_update_user(array('ID' => $user_id, 'user_email' => $user_email));
-        }
-
-        if (isset($_POST['user_pass']) && !empty($_POST['user_pass']) && isset($_POST['user_pass_confirm']) && !empty($_POST['user_pass_confirm'])) {
-            $user_pass = sanitize_text_field($_POST['user_pass']);
-            $user_pass_confirm = sanitize_text_field($_POST['user_pass_confirm']);
-
-            if ($user_pass === $user_pass_confirm) {
-                wp_set_password($user_pass, $user_id);
-            }
-        }
-    }
-}
-add_action('init', 'deia_save_user_profile');
-
 // Show only the musician's own posts
 function deia_show_only_musician_own_posts($query) {
     if (is_admin() && $query->is_main_query() && current_user_can('musician')) {
@@ -194,8 +182,17 @@ function deia_show_only_musician_own_posts($query) {
 }
 add_action('pre_get_posts', 'deia_show_only_musician_own_posts');
 
-// Add custom meta boxes and remove unwanted meta boxes
-function deia_musician_cmb() {
+// Add and Remove custom meta boxes
+function deia_metaboxes() {
+    if (current_user_can('musician')) {
+        error_log('Removing meta boxes for musician');
+        remove_meta_box('categorydiv', 'post', 'side'); // Categories meta box
+        remove_meta_box('commentstatusdiv', 'post', 'normal'); // Discussion meta box
+        remove_meta_box('commentsdiv', 'post', 'normal'); // Comments meta box
+        remove_meta_box('formatdiv', 'post', 'side'); // Format meta box
+        remove_meta_box('astra_settings_meta_box', 'post', 'side'); // Astra Settings meta box
+    }
+
     // Register the musician_details meta box
     add_meta_box(
         'musician_details',
@@ -205,15 +202,8 @@ function deia_musician_cmb() {
         'normal',
         'high'
     );
-
-    // Remove unwanted meta boxes for musicians (only works with the classic editor, not the GG block editor)
-    if (current_user_can('musician')) {
-        remove_meta_box('categorydiv', 'post', 'side'); // Categories meta box
-        remove_meta_box('commentstatusdiv', 'post', 'normal'); // Discussion meta box
-        remove_meta_box('commentsdiv', 'post', 'normal'); // Comments meta box
-    }
 }
-add_action('add_meta_boxes', 'deia_musician_cmb');
+add_action('add_meta_boxes', 'deia_metaboxes', 99 ); // High Priority
 
 function deia_musician_callback($post) {
     wp_nonce_field('deia_save_musician_details', 'musician_details_nonce');
@@ -226,14 +216,14 @@ function deia_musician_callback($post) {
         'musician_vimeo' => 'Vimeo',
         'musician_twitter' => 'Twitter',
         'musician_facebook' => 'Facebook',
-        'musician_tiktok' => 'Tiktok',
+        'musician_tiktok' => 'TikTok',
         'musician_events' => 'Events',
         'musician_bio' => 'Biography',
-        'musician_genres' => 'Genres',
-        'musician_instruments' => 'Instruments',
-        'musician_location' => 'Location',
-        'musician_years_active' => 'Years Active',
-        'musician_record_label' => 'Record Label',
+        // 'musician_genres' => 'Genres',
+        // 'musician_instruments' => 'Instruments',
+        // 'musician_location' => 'Location',
+        // 'musician_years_active' => 'Years Active',
+        // 'musician_record_label' => 'Record Label',
     );
 
     foreach ($fields as $key => $label) {
@@ -271,12 +261,12 @@ function deia_save_musician_details($post_id) {
         'musician_facebook',
         'musician_tiktok',
         'musician_events',
-        'musician_bio',
-        'musician_genres',
-        'musician_instruments',
-        'musician_location',
-        'musician_years_active',
-        'musician_record_label'
+        'musician_bio'
+        // 'musician_genres',
+        // 'musician_instruments',
+        // 'musician_location',
+        // 'musician_years_active',
+        // 'musician_record_label'
     );
 
     foreach ($fields as $field) {
@@ -298,18 +288,3 @@ function deia_allow_musician_edit_own_posts($allcaps, $cap, $args) {
     return $allcaps;
 }
 add_filter('user_has_cap', 'deia_allow_musician_edit_own_posts', 10, 3);
-
-// Ensure the musician role has the required capabilities
-function deia_add_musician_capabilities() {
-    $role = get_role('musician');
-    if (!$role) {
-        return; // Role not registered yet
-    }
-    $role->add_cap('read');
-    $role->add_cap('edit_posts');
-    $role->add_cap('edit_published_posts');
-    $role->add_cap('delete_posts');
-    $role->add_cap('publish_posts');
-    $role->add_cap('upload_files');
-}
-add_action('admin_init', 'deia_add_musician_capabilities');
