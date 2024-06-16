@@ -12,6 +12,12 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit; // Exit if accessed directly.
 }
 
+// Check if the post is in the "musicians" category
+if ( in_category( 'musicians' ) ) {
+    get_template_part( 'single-musicians' );
+    return;
+}
+
 get_header(); ?>
 
 <?php if ( astra_page_layout() == 'left-sidebar' ) : ?>

@@ -15,7 +15,13 @@ define( 'CHILD_THEME_ASTRA_CHILD_VERSION', '1.0.0' );
 
 
 /**
- * NEWS - Add custom content after the main content loop
+ * MUSICIANS - Include musician user type logic --------------------------------------------------------------------------
+ */
+require get_stylesheet_directory() . '/musician.php';
+
+
+/**
+ * NEWS - Add custom content after the main content loop -----------------------------------------------------------------
  */
 function custom_content_after_loop() {
 	// Check if the current page is the front page
@@ -173,7 +179,7 @@ add_action('wp_enqueue_scripts', 'child_enqueue_styles', 15);
 
 
 /**
- * CONTACT US MODAL - Enqueue script for modal functionality
+ * CONTACT US MODAL - Enqueue script for modal functionality -------------------------------------------------------------
  */
 // Enqueue script for modal functionality
 function deia_modal_scripts() {
@@ -236,3 +242,4 @@ function custom_css_to_hide_scroll_top() {
     <?php }
 }
 add_action( 'wp_head', 'custom_css_to_hide_scroll_top' );
+
