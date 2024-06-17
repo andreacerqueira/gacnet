@@ -70,15 +70,40 @@ add_action('admin_menu', 'deia_customize_musician_admin_menu', 999); // High pri
 
 // Callback function for "My Posts" page
 function deia_musician_posts_page() {
+    // Get the ID of the "musicians" category
+    $musicians_category = get_category_by_slug('musicians');
+    $musicians_category_id = $musicians_category ? $musicians_category->term_id : 0;
+
     echo '<div class="wrap">';
     echo '<h1>Musicians/Bands</h1>';
     echo '<p>Published artists:</p>';
+
+    // Add "Add New Band" button with category pre-filled
+    echo '<a href="' . admin_url('post-new.php?post_category=' . $musicians_category_id) . '" class="page-title-action">Add New Band</a>';
 
     // Display musician's posts
     deia_display_musician_posts(); // Function to display posts
 
     echo '</div>';
 }
+
+// Ensure the new post is saved in the "musicians" category
+function deia_pre_fill_musician_category($post_id, $post, $update) {
+    // Check if this is a new post
+    if ($update) {
+        return;
+    }
+
+    // Get the "musicians" category ID
+    $musicians_category = get_category_by_slug('musicians');
+    $musicians_category_id = $musicians_category ? $musicians_category->term_id : 0;
+
+    // Assign the "musicians" category to the new post
+    if ($musicians_category_id) {
+        wp_set_post_categories($post_id, array($musicians_category_id));
+    }
+}
+add_action('wp_insert_post', 'deia_pre_fill_musician_category', 10, 3);
 
 // Diable items from Admin top bar
 function deia_customize_admin_bar($wp_admin_bar) {
