@@ -39,20 +39,85 @@ function deia_customize_musician_admin_menu() {
         remove_menu_page('edit-comments.php'); // Comments
         remove_menu_page('tools.php'); // Tools
         remove_menu_page('options-general.php'); // Settings
+        remove_menu_page('themes.php'); // Appearance
+        remove_menu_page('users.php'); // Users
+        remove_menu_page('plugins.php');
+        remove_menu_page('tools.php');
+        remove_menu_page('profile.php');
 
-        // Add a custom page for musicians
+        // Add a custom page for musicians/bands
         add_menu_page(
-            'Admin', 
-            'GACNET Admin', 
-            'read', 
-            'musician_profile', 
-            'deia_musician_profile_page', 
-            'dashicons-admin-users', 
-            2
+            'Musicians/Bands', // Page title
+            'Musicians/Bands', // Menu title
+            'read', // Capability
+            'musicians_bands', // Menu slug
+            'deia_musician_posts_page', // Callback function
+            'dashicons-format-audio', // Icon
+            2 // Menu position
+        );
+
+        // Add a custom page for profile
+        add_menu_page(
+            'Profile', // Page title
+            'Profile', // Menu title
+            'read', // Capability
+            'musician_profile', // Menu slug
+            'deia_musician_profile_page', // Callback function
+            'dashicons-admin-users', // Icon
+            3 // Menu position
         );
     }
 }
-add_action('admin_menu', 'deia_customize_musician_admin_menu', 99); // High priority
+add_action('admin_menu', 'deia_customize_musician_admin_menu', 999); // High priority
+
+// Callback function for "My Posts" page
+function deia_musician_posts_page() {
+    echo '<div class="wrap">';
+    echo '<h1>Musicians/Bands</h1>';
+    echo '<p>Published artists:</p>';
+
+    // Display musician's posts
+    deia_display_musician_posts(); // Function to display posts
+
+    echo '</div>';
+}
+
+// Diable items from Admin top bar
+function deia_customize_admin_bar($wp_admin_bar) {
+    if (current_user_can('musician')) {
+        // Remove default items
+        $wp_admin_bar->remove_node('wp-logo'); // WordPress logo
+        $wp_admin_bar->remove_node('site-name'); // Site name
+        $wp_admin_bar->remove_node('updates'); // Updates
+        $wp_admin_bar->remove_node('comments'); // Comments
+        $wp_admin_bar->remove_node('new-content'); // New content
+
+        // Remove Hostinger admin bar item
+        $wp_admin_bar->remove_node('hostinger_admin_bar');
+
+        // Leave only the logoff item
+        // $wp_admin_bar->remove_node('edit-profile'); // Profile submenu
+
+        // Add a custom Website Title
+        $wp_admin_bar->add_node(array(
+            'id' => 'gacnet_home',
+            'title' => '&#x2730; GACNET',
+            'href' => home_url(),
+            'meta' => array(
+                'class' => 'gacnet-home-button', // Optional CSS class for styling
+                'target' => '_blank', // Optional target attribute for the link
+            ),
+        ));
+
+        // Add a custom logoff item if needed
+        // $wp_admin_bar->add_node(array(
+        //     'id' => 'log-out',
+        //     'title' => 'Log Out',
+        //     'href' => wp_logout_url(),
+        // ));
+    }
+}
+add_action('admin_bar_menu', 'deia_customize_admin_bar', 999);
 
 // Disable block editor for musicians
 function deia_disable_block_editor_for_musician($use_block_editor, $post_type) {
@@ -86,7 +151,6 @@ function deia_display_musician_posts() {
     $query = new WP_Query($args);
     
     if ($query->have_posts()) {
-        echo '<h2>Musicians/Bands</h2>';
         echo '<ul>';
         while ($query->have_posts()) {
             $query->the_post();
@@ -162,14 +226,10 @@ function deia_musician_profile_form() {
 // Create a custom page for musicians to manage their profile
 function deia_musician_profile_page() {
     echo '<div class="wrap">';
-    echo '<h1>GACNET Admin Page</h1>';
-    echo '<p>Here you can edit your profile and manage your posts.</p>';
+    echo '<h1>Profile</h1>';
 
     // Include a form for musicians to edit their information
     deia_musician_profile_form(); // Function to display profile form
-
-    // Display musician's posts
-    deia_display_musician_posts(); // Function to display posts
 
     echo '</div>';
 }
