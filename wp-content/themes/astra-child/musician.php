@@ -25,10 +25,12 @@ function deia_add_musician_capabilities() {
     $role->add_cap('edit_posts');
     $role->add_cap('edit_published_posts');
     $role->add_cap('delete_posts');
+    $role->add_cap('delete_published_posts');
     $role->add_cap('publish_posts');
     $role->add_cap('upload_files');
 }
 add_action('admin_init', 'deia_add_musician_capabilities');
+
 
 // Hide admin menu items for musicians and add custom pages
 function deia_customize_musician_admin_menu() {
@@ -164,6 +166,12 @@ function deia_display_musician_posts() {
             if (current_user_can('edit_post', $post_id)) {
                 $edit_post_url = get_edit_post_link($post_id);
                 $delete_post_url = get_delete_post_link($post_id);
+
+                // Log the post ID, title, and URLs
+                // error_log('Post ID: ' . $post_id);
+                // error_log('Post Title: ' . $post_title);
+                // error_log('Edit URL: ' . $edit_post_url);
+                // error_log('Delete URL: ' . $delete_post_url);
 
                 echo '<li>';
                 echo '<a href="' . esc_url($edit_post_url) . '">' . esc_html($post_title) . '</a>';
