@@ -42,7 +42,6 @@ function deia_customize_musician_admin_menu() {
         remove_menu_page('themes.php'); // Appearance
         remove_menu_page('users.php'); // Users
         remove_menu_page('plugins.php');
-        remove_menu_page('tools.php');
         remove_menu_page('profile.php');
 
         // Add a custom page for musicians/bands
@@ -128,9 +127,25 @@ function deia_disable_block_editor_for_musician($use_block_editor, $post_type) {
 }
 add_filter('use_block_editor_for_post', 'deia_disable_block_editor_for_musician', 10, 2);
 
-// Redirect musicians to their custom page upon login
+// Redirect musicians after saving posts
 function deia_redirect_musician_dashboard() {
-    if (current_user_can('musician') && !isset($_GET['page']) && $_GET['page'] !== 'musician_profile' && !isset($_GET['post'])) {
+    if (isset($_POST['action']) && $_POST['action'] == 'editpost') {
+        $post_id = isset($_POST['post_ID']) ? intval($_POST['post_ID']) : 0;
+        if ($post_id > 0 && current_user_can('edit_post', $post_id)) {
+            // Check if the post was saved successfully
+            if (isset($_POST['save']) || isset($_POST['publish'])) {
+                // Uncomment the following line for debugging purposes
+                // wp_die('Redirect condition met after editing post. Post ID: ' . $post_id);
+
+                // Redirect to edit post page after editing
+                wp_redirect(admin_url('post.php?action=edit&post=' . $post_id));
+                exit;
+            }
+        }
+    }
+
+    // Redirect to musician profile page if no specific post or page request
+    if (current_user_can('musician') && empty($_GET['page']) && empty($_GET['post'])) {
         wp_redirect(admin_url('admin.php?page=musician_profile'));
         exit;
     }
@@ -140,7 +155,7 @@ add_action('admin_init', 'deia_redirect_musician_dashboard');
 // Display the user posts
 function deia_display_musician_posts() {
     $current_user_id = get_current_user_id();
-    $current_user = wp_get_current_user();
+    // $current_user = wp_get_current_user();
     
     $args = array(
         'post_type' => 'post',
@@ -162,7 +177,7 @@ function deia_display_musician_posts() {
                 $delete_post_url = get_delete_post_link($post_id);
 
                 echo '<li>';
-                echo '<a href="' . esc_url($edit_post_url) . '" target="_blank">' . esc_html($post_title) . '</a>';
+                echo '<a href="' . esc_url($edit_post_url) . '">' . esc_html($post_title) . '</a>';
                 echo ' | <a href="' . esc_url($delete_post_url) . '" onclick="return confirm(\'Are you sure you want to delete this post?\')">Delete</a>';
                 echo '</li>';
             } else {
@@ -279,17 +294,12 @@ function deia_musician_callback($post) {
         'musician_tiktok' => 'TikTok',
         'musician_events' => 'Events',
         'musician_bio' => 'Biography',
-        // 'musician_genres' => 'Genres',
-        // 'musician_instruments' => 'Instruments',
-        // 'musician_location' => 'Location',
-        // 'musician_years_active' => 'Years Active',
-        // 'musician_record_label' => 'Record Label',
     );
 
     foreach ($fields as $key => $label) {
         $value = get_post_meta($post->ID, $key, true);
         echo '<label for="' . $key . '">' . $label . ':</label>';
-        if ($key == 'musician_events') {
+        if ($key == 'musician_events' || $key == 'musician_bio') {
             echo '<textarea id="' . $key . '" name="' . $key . '" rows="5" cols="50">' . esc_textarea($value) . '</textarea>';
         } else {
             echo '<input type="text" id="' . $key . '" name="' . $key . '" value="' . esc_attr($value) . '" size="25" />';
@@ -299,7 +309,10 @@ function deia_musician_callback($post) {
 }
 
 function deia_save_musician_details($post_id) {
+    error_log('Save post hook triggered for post ID: ' . $post_id);
+
     if (!isset($_POST['musician_details_nonce']) || !wp_verify_nonce($_POST['musician_details_nonce'], 'deia_save_musician_details')) {
+        error_log('Nonce verification failed.');
         return;
     }
 
@@ -322,11 +335,6 @@ function deia_save_musician_details($post_id) {
         'musician_tiktok',
         'musician_events',
         'musician_bio'
-        // 'musician_genres',
-        // 'musician_instruments',
-        // 'musician_location',
-        // 'musician_years_active',
-        // 'musician_record_label'
     );
 
     foreach ($fields as $field) {
