@@ -15,6 +15,7 @@ function deia_add_musician_role() {
 }
 add_action('init', 'deia_add_musician_role');
 
+
 // Ensure the musician role has the required capabilities
 function deia_add_musician_capabilities() {
     $role = get_role('musician');
@@ -32,9 +33,26 @@ function deia_add_musician_capabilities() {
 add_action('admin_init', 'deia_add_musician_capabilities');
 
 
+// Remove post editor for musicians
+function deia_remove_post_editor_for_musicians() {
+    if (current_user_can('musician')) {
+        remove_post_type_support('post', 'editor'); // Remove the post editor
+    }
+}
+add_action('init', 'deia_remove_post_editor_for_musicians');
+
+
+// // Remove page editor
+// function deia_remove_page_editor_support() {
+//     remove_post_type_support('page', 'editor'); // Remove the page editor
+// }
+// add_action('admin_init', 'deia_remove_page_editor_support');
+
+
 // Hide admin menu items for musicians and add custom pages
 function deia_customize_musician_admin_menu() {
     if (current_user_can('musician')) {
+        // Remove unwanted menu items
         remove_menu_page('index.php'); // Dashboard
         remove_menu_page('edit.php'); // Posts
         remove_menu_page('upload.php'); // Media
@@ -70,6 +88,187 @@ function deia_customize_musician_admin_menu() {
 }
 add_action('admin_menu', 'deia_customize_musician_admin_menu', 999); // High priority
 
+
+// Hide admin notices for musicians
+function deia_hide_admin_notices_for_musicians() {
+    if (current_user_can('musician')) {
+        global $wp_filter;
+        
+        // Remove actions from 'admin_notices' and 'all_admin_notices'
+        if (isset($wp_filter['admin_notices'])) {
+            unset($wp_filter['admin_notices']);
+        }
+        if (isset($wp_filter['all_admin_notices'])) {
+            unset($wp_filter['all_admin_notices']);
+        }
+    }
+}
+add_action('admin_head', 'deia_hide_admin_notices_for_musicians');
+
+
+// Disable autosave, revisions, and autosave notice for musicians
+function deia_customize_admin_for_musicians() {
+    if (current_user_can('musician')) {
+        // Disable autosave
+        wp_deregister_script('autosave');
+
+        // Remove revisions meta box
+        remove_meta_box('revisionsdiv', 'post', 'normal');
+
+        // Remove autosave notice
+        remove_action('admin_print_footer_scripts', 'wp_print_autosave_notice');
+    }
+}
+add_action('admin_enqueue_scripts', 'deia_customize_admin_for_musicians');
+
+
+
+
+
+
+
+
+
+
+
+// SAVE DRAFT
+// Conditionally display the save button for musicians
+function deia_display_save_button() {
+    global $pagenow;
+
+    if (current_user_can('musician') && in_array($pagenow, array('post-new.php', 'post.php'))) {
+        echo '<div id="publishing-action">';
+        echo '<button type="submit" name="save" id="save-post" class="button button-primary button-large">Save</button>';
+        echo '</div>';
+    }
+}
+add_action('edit_form_top', 'deia_display_save_button');
+
+
+
+
+
+
+
+
+
+
+// PUBLISH
+// Change save behavior to publish immediately
+function deia_publish_immediately($data, $postarr) {
+    if (current_user_can('musician')) {
+        $data['post_status'] = 'publish';
+    }
+    return $data;
+}
+add_filter('wp_insert_post_data', 'deia_publish_immediately', 10, 2);
+
+// Ensure drafts are not automatically published
+function deia_disable_auto_publish_drafts() {
+    remove_action('post_updated', 'wp_save_post_revision', 10, 1);
+}
+add_action('init', 'deia_disable_auto_publish_drafts');
+
+// Custom save/publish button for musicians
+function deia_custom_publish_button() {
+    if (current_user_can('musician')) {
+        echo '<div id="publishing-action">';
+        echo '<button type="submit" name="publish" id="publish" class="button button-primary button-large">Publish</button>';
+        echo '</div>';
+    }
+}
+add_action('post_submitbox_misc_actions', 'deia_custom_publish_button');
+
+
+
+
+
+
+
+
+
+
+// Modify the <h1> heading on "Add New Post" and "Edit Post" pages for musicians
+function deia_custom_post_headings() {
+    if (current_user_can('musician')) {
+        echo '<script type="text/javascript">
+            document.addEventListener("DOMContentLoaded", function() {
+                if (document.body.classList.contains("post-new-php")) {
+                    document.querySelector(".wrap h1.wp-heading-inline").innerText = "Add New Musician/Band";
+                } else if (document.body.classList.contains("post-php")) {
+                    document.querySelector(".wrap h1.wp-heading-inline").innerText = "Edit Musician/Band";
+                }
+            });
+        </script>';
+    }
+}
+add_action('admin_head', 'deia_custom_post_headings');
+
+
+// Change placeholder text for title input field
+function deia_change_title_placeholder($title_placeholder) {
+    global $post_type;
+
+    if (current_user_can('musician') && $post_type === 'post') {
+        $title_placeholder = 'Enter Name';
+    }
+
+    return $title_placeholder;
+}
+add_filter('enter_title_here', 'deia_change_title_placeholder');
+
+
+// // Redirect musicians to their custom pages upon login
+// function deia_redirect_musician_dashboard() {
+//     if (current_user_can('musician')) {
+//         // wp_redirect(admin_url('admin.php?page=musicians_bands'));
+//         wp_redirect(admin_url('admin.php?page=musician_profile'));
+//         exit;
+//     }
+// }
+// add_action('admin_init', 'deia_redirect_musician_dashboard');
+
+
+// Enqueue custom js scripts
+function deia_enqueue_custom_admin_scripts() {
+    if (current_user_can('musician')) {
+        wp_enqueue_script('deia-custom-admin-js', get_stylesheet_directory_uri() . '/deia/deia-admin.js', array('jquery'), null, true);
+    }
+}
+add_action('admin_enqueue_scripts', 'deia_enqueue_custom_admin_scripts');
+
+
+// Enqueue custom styles
+function deia_enqueue_custom_admin_styles() {
+    if (current_user_can('musician')) {
+        wp_enqueue_style('deia-custom-admin-styles', get_stylesheet_directory_uri() . '/deia/deia-admin.css');
+    }
+}
+add_action('admin_enqueue_scripts', 'deia_enqueue_custom_admin_styles');
+
+
+// Add a body class to indicate the user role for more precise targeting in JavaScript
+function deia_add_body_class_for_musicians($classes) {
+    if (current_user_can('musician')) {
+        $classes .= ' role-musician';
+    }
+    return $classes;
+}
+add_filter('admin_body_class', 'deia_add_body_class_for_musicians');
+
+
+function deia_restrict_media_library_access() {
+    if (current_user_can('musician')) {
+        global $pagenow;
+        if ($pagenow === 'upload.php' || $pagenow === 'media-new.php') {
+            wp_redirect(admin_url());
+            exit;
+        }
+    }
+}
+add_action('admin_init', 'deia_restrict_media_library_access');
+
+
 // Callback function for "My Posts" page
 function deia_musician_posts_page() {
     // Get the ID of the "musicians" category
@@ -89,6 +288,7 @@ function deia_musician_posts_page() {
     echo '</div>';
 }
 
+
 // Ensure the new post is saved in the "musicians" category
 function deia_pre_fill_musician_category($post_id, $post, $update) {
     // Check if this is a new post
@@ -107,6 +307,7 @@ function deia_pre_fill_musician_category($post_id, $post, $update) {
 }
 add_action('wp_insert_post', 'deia_pre_fill_musician_category', 10, 3);
 
+
 // Diable items from Admin top bar
 function deia_customize_admin_bar($wp_admin_bar) {
     if (current_user_can('musician')) {
@@ -116,9 +317,7 @@ function deia_customize_admin_bar($wp_admin_bar) {
         $wp_admin_bar->remove_node('updates'); // Updates
         $wp_admin_bar->remove_node('comments'); // Comments
         $wp_admin_bar->remove_node('new-content'); // New content
-
-        // Remove Hostinger admin bar item
-        $wp_admin_bar->remove_node('hostinger_admin_bar');
+        $wp_admin_bar->remove_node('hostinger_admin_bar'); // Hostinger admin bar item
 
         // Leave only the logoff item
         // $wp_admin_bar->remove_node('edit-profile'); // Profile submenu
@@ -143,6 +342,7 @@ function deia_customize_admin_bar($wp_admin_bar) {
     }
 }
 add_action('admin_bar_menu', 'deia_customize_admin_bar', 999);
+
 
 // Custom function to display musician's own posts
 function deia_display_musician_posts() {
@@ -188,6 +388,7 @@ function deia_display_musician_posts() {
     }
 }
 
+
 // Callback function for musician profile page
 function deia_musician_profile_page() {
     echo '<div class="wrap">';
@@ -198,6 +399,7 @@ function deia_musician_profile_page() {
 
     echo '</div>';
 }
+
 
 // Function to display and handle musician profile form
 function deia_musician_profile_form() {
@@ -246,13 +448,14 @@ function deia_musician_profile_form() {
     <?php
 }
 
+
 // Function to save musician details meta box
 function deia_save_musician_details($post_id) {
-    error_log('Save post hook triggered for post ID: ' . $post_id);
+    // error_log('Save post hook triggered for post ID: ' . $post_id);
 
     // Ensure nonce verification is successful
     if (!isset($_POST['musician_details_nonce']) || !wp_verify_nonce($_POST['musician_details_nonce'], 'deia_save_musician_details')) {
-        error_log('Nonce verification failed.');
+        // error_log('Nonce verification failed.');
         return;
     }
 
@@ -285,6 +488,7 @@ function deia_save_musician_details($post_id) {
 }
 add_action('save_post', 'deia_save_musician_details');
 
+
 // Filter to show only musician's own posts
 function deia_show_only_musician_own_posts($query) {
     if (is_admin() && $query->is_main_query() && current_user_can('musician')) {
@@ -292,6 +496,7 @@ function deia_show_only_musician_own_posts($query) {
     }
 }
 add_action('pre_get_posts', 'deia_show_only_musician_own_posts');
+
 
 // Function to remove unnecessary meta boxes for musicians
 function deia_metaboxes() {
@@ -301,6 +506,20 @@ function deia_metaboxes() {
         remove_meta_box('commentsdiv', 'post', 'normal'); // Comments meta box
         remove_meta_box('formatdiv', 'post', 'side'); // Format meta box
         remove_meta_box('astra_settings_meta_box', 'post', 'side'); // Astra Settings meta box
+
+        remove_meta_box('submitdiv', 'post', 'side'); // Remove the publish box
+        remove_meta_box('postimagediv', 'post', 'side'); // Remove the featured image box
+        remove_meta_box('tagsdiv-post_tag', 'post', 'side'); // Tags meta box
+        remove_meta_box('postcustom', 'post', 'normal'); // Custom fields meta box
+        remove_meta_box('slugdiv', 'post', 'normal'); // Slug meta box
+        remove_meta_box('authordiv', 'post', 'normal'); // Author meta box
+        remove_meta_box('revisionsdiv', 'post', 'normal'); // Revisions meta box
+        remove_meta_box('postexcerpt', 'post', 'normal'); // Excerpt meta box
+        remove_meta_box('trackbacksdiv', 'post', 'normal'); // Trackbacks meta box
+
+        // remove_meta_box('wpfooter', 'post', 'normal'); // WP footer meta box
+        // remove_meta_box('screen-meta', 'post', 'normal');
+        // remove_meta_box('screen-meta-links', 'post', 'normal');
     }
 
     // Register the musician_details meta box
@@ -314,6 +533,7 @@ function deia_metaboxes() {
     );
 }
 add_action('add_meta_boxes', 'deia_metaboxes', 99); // High Priority
+
 
 // Callback function for musician details meta box
 function deia_musician_callback($post) {
@@ -332,17 +552,21 @@ function deia_musician_callback($post) {
         'musician_bio' => 'Biography',
     );
 
+    echo '<div class="deia-form">';
     foreach ($fields as $key => $label) {
         $value = get_post_meta($post->ID, $key, true);
+        echo '<div class="row">';
         echo '<label for="' . $key . '">' . $label . ':</label>';
         if ($key == 'musician_events' || $key == 'musician_bio') {
             echo '<textarea id="' . $key . '" name="' . $key . '" rows="5" cols="50">' . esc_textarea($value) . '</textarea>';
         } else {
             echo '<input type="text" id="' . $key . '" name="' . $key . '" value="' . esc_attr($value) . '" size="25" />';
         }
-        echo '<br>';
+        echo '</div>';
     }
+    echo '</div>';
 }
+
 
 // Filter to allow musicians to edit their own posts only
 function deia_allow_musician_edit_own_posts($allcaps, $cap, $args) {
@@ -363,7 +587,6 @@ function deia_allow_musician_edit_own_posts($allcaps, $cap, $args) {
     return $allcaps;
 }
 add_filter('user_has_cap', 'deia_allow_musician_edit_own_posts', 10, 3);
-
 
 // Disable block editor for musicians
 function deia_disable_block_editor_for_musician($use_block_editor, $post_type) {

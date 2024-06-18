@@ -1,0 +1,44 @@
+/* body.role-musician .page-title-action, */
+body.role-musician #postdivrich,
+body.role-musician #minor-publishing-actions,
+/* body.role-musician #save-post, */
+body.role-musician #collapse-menu,
+body.role-musician #wpfooter,
+body.role-musician #notice,
+body.role-musician #wpfooter,
+body.role-musician #screen-meta-links,
+body.role-musician #screen-meta,
+body.role-musician #musician_details .handle-actions {
+  display: none !important;
+}
+
+body.role-musician #publishing-action {
+  float: unset;
+  position: fixed;
+  bottom: 0;
+  padding: 10px 20px;
+  background-color: #c7d2d9;
+  width: 100%;
+  left: 160px;
+  z-index: 100;
+}
+
+.deia-form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.deia-form .row {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.deia-form .row label {
+  font-weight: bold;
+}
+
+/* #poststuff #post-body.columns-2 {
+  margin-right: unset;
+} */
