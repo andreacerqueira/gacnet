@@ -18,7 +18,7 @@ body.role-musician #publishing-action {
   bottom: 0;
   padding: 10px 20px;
   background-color: #c7d2d9;
-  width: 100%;
+  width: -webkit-fill-available;
   left: 160px;
   z-index: 100;
 }
@@ -37,6 +37,36 @@ body.role-musician #publishing-action {
 
 .deia-form .row label {
   font-weight: bold;
+}
+
+.deia-list-block {
+  margin: 20px 0 0 0;
+  padding: 0;
+  border: 1px solid #c3c4c7;
+  box-shadow: 0 1px 1px rgba(0, 0, 0, 0.04);
+}
+
+.deia-list-block ul {
+  margin: 0;
+  padding: 0;
+}
+
+.deia-list-block ul li {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: #646970;
+  padding: 8px 12px;
+  margin: 0;
+}
+
+.deia-list-block ul li a {
+  flex: 1 1 auto;
+  text-decoration: none;
+}
+
+.deia-list-block ul li:nth-child(odd) {
+  background-color: #f6f7f7;
 }
 
 /* #poststuff #post-body.columns-2 {

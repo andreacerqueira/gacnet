@@ -131,18 +131,18 @@ add_action('admin_enqueue_scripts', 'deia_customize_admin_for_musicians');
 
 
 
-// SAVE DRAFT
-// Conditionally display the save button for musicians
-function deia_display_save_button() {
-    global $pagenow;
+// // SAVE DRAFT
+// // Conditionally display the save button for musicians
+// function deia_display_save_button() {
+//     global $pagenow;
 
-    if (current_user_can('musician') && in_array($pagenow, array('post-new.php', 'post.php'))) {
-        echo '<div id="publishing-action">';
-        echo '<button type="submit" name="save" id="save-post" class="button button-primary button-large">Save</button>';
-        echo '</div>';
-    }
-}
-add_action('edit_form_top', 'deia_display_save_button');
+//     if (current_user_can('musician') && in_array($pagenow, array('post-new.php', 'post.php'))) {
+//         echo '<div id="publishing-action">';
+//         echo '<button type="submit" name="save" id="save-post" class="button button-primary button-large">Save</button>';
+//         echo '</div>';
+//     }
+// }
+// add_action('edit_form_top', 'deia_display_save_button');
 
 
 
@@ -154,30 +154,47 @@ add_action('edit_form_top', 'deia_display_save_button');
 
 
 // PUBLISH
-// Change save behavior to publish immediately
-function deia_publish_immediately($data, $postarr) {
+// Disable auto save revisions for musicians
+function deia_disable_auto_save_revisions() {
     if (current_user_can('musician')) {
-        $data['post_status'] = 'publish';
+        remove_action('post_updated', 'wp_save_post_revision');
     }
-    return $data;
 }
-add_filter('wp_insert_post_data', 'deia_publish_immediately', 10, 2);
+add_action('init', 'deia_disable_auto_save_revisions');
 
-// Ensure drafts are not automatically published
-function deia_disable_auto_publish_drafts() {
-    remove_action('post_updated', 'wp_save_post_revision', 10, 1);
-}
-add_action('init', 'deia_disable_auto_publish_drafts');
-
-// Custom save/publish button for musicians
+// Custom publish button for musicians
 function deia_custom_publish_button() {
-    if (current_user_can('musician')) {
+    global $post;
+
+    if (current_user_can('musician') && $post->post_type === 'post') {
         echo '<div id="publishing-action">';
         echo '<button type="submit" name="publish" id="publish" class="button button-primary button-large">Publish</button>';
         echo '</div>';
     }
 }
-add_action('post_submitbox_misc_actions', 'deia_custom_publish_button');
+add_action('edit_form_top', 'deia_custom_publish_button');
+
+// Change save behavior to publish immediately for musicians
+function deia_publish_immediately($data, $postarr) {
+    if (current_user_can('musician') && $postarr['post_type'] === 'post') {
+        // Ensure post status is publish
+        $data['post_status'] = 'publish';
+
+        // Generate unique slug if not provided or set as "auto-draft"
+        if (empty($data['post_name']) || $data['post_name'] === 'auto-draft') {
+            $post_title = isset($data['post_title']) ? $data['post_title'] : '';
+
+            // Generate unique slug based on title
+            $data['post_name'] = wp_unique_post_slug(sanitize_title($post_title), $postarr['ID'], $postarr['post_status'], $postarr['post_type'], $postarr['post_parent']);
+        }
+    }
+    return $data;
+}
+add_filter('wp_insert_post_data', 'deia_publish_immediately', 10, 2);
+
+
+
+
 
 
 
@@ -279,8 +296,8 @@ function deia_musician_posts_page() {
     echo '<h1>Musicians/Bands</h1>';
     echo '<p>Published artists:</p>';
 
-    // Add "Add New Band" button with category pre-filled
-    echo '<a href="' . admin_url('post-new.php?post_category=' . $musicians_category_id) . '" class="page-title-action">Add New Band</a>';
+    // Add "Add New Band" button with category pre-filled //ghost css: page-title-action
+    echo '<a href="' . admin_url('post-new.php?post_category=' . $musicians_category_id) . '" class="button button-primary button-large">Add New Band</a>';
 
     // Display musician's posts
     deia_display_musician_posts(); // Function to display posts
@@ -357,6 +374,7 @@ function deia_display_musician_posts() {
     $query = new WP_Query($args);
 
     if ($query->have_posts()) {
+        echo '<div class="deia-list-block">';
         echo '<ul>';
         while ($query->have_posts()) {
             $query->the_post();
@@ -365,28 +383,43 @@ function deia_display_musician_posts() {
 
             if (current_user_can('edit_post', $post_id)) {
                 $edit_post_url = get_edit_post_link($post_id);
-                $delete_post_url = get_delete_post_link($post_id);
-
-                // Log the post ID, title, and URLs
-                // error_log('Post ID: ' . $post_id);
-                // error_log('Post Title: ' . $post_title);
-                // error_log('Edit URL: ' . $edit_post_url);
-                // error_log('Delete URL: ' . $delete_post_url);
-
+                
+                // Form to delete post
                 echo '<li>';
                 echo '<a href="' . esc_url($edit_post_url) . '">' . esc_html($post_title) . '</a>';
-                echo ' | <a href="' . esc_url($delete_post_url) . '" onclick="return confirm(\'Are you sure you want to delete this post?\')">Delete</a>';
+                echo '<form method="post" action="' . esc_url(admin_url('admin-post.php')) . '">';
+                echo '<input type="hidden" name="action" value="deia_delete_post">';
+                echo '<input type="hidden" name="post_id" value="' . esc_attr($post_id) . '">';
+                echo '<input type="hidden" name="nonce" value="' . wp_create_nonce('deia-delete-post-nonce') . '">';
+                echo '<input type="submit" value="Delete" onclick="return confirm(\'Are you sure you want to delete this post?\')" class="button">';
+                echo '</form>';
                 echo '</li>';
             } else {
                 echo '<li>' . esc_html($post_title) . '</li>';
             }
         }
         echo '</ul>';
+        echo '</div>';
         wp_reset_postdata();
     } else {
         echo '<p>No posts found.</p>';
     }
 }
+
+// Handle delete post action
+function deia_handle_delete_post() {
+    if (isset($_POST['action']) && $_POST['action'] === 'deia_delete_post') {
+        if (isset($_POST['post_id']) && isset($_POST['nonce']) && wp_verify_nonce($_POST['nonce'], 'deia-delete-post-nonce')) {
+            $post_id = intval($_POST['post_id']);
+            if (current_user_can('delete_post', $post_id)) {
+                wp_delete_post($post_id, true); // Set second parameter to true to force delete permanently
+                wp_safe_redirect( $_SERVER['HTTP_REFERER'] ); // Redirect back to the previous page
+                exit;
+            }
+        }
+    }
+}
+add_action('admin_post_deia_delete_post', 'deia_handle_delete_post');
 
 
 // Callback function for musician profile page
