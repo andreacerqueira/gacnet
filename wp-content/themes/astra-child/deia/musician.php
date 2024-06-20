@@ -204,15 +204,15 @@ function deia_change_title_placeholder($title_placeholder) {
 add_filter('enter_title_here', 'deia_change_title_placeholder');
 
 
-// // Redirect musicians to their custom pages upon login
+//// Redirect musicians to their custom page upon login
 // function deia_redirect_musician_dashboard() {
-//     if (current_user_can('musician')) {
-//         // wp_redirect(admin_url('admin.php?page=musicians_bands'));
-//         wp_redirect(admin_url('admin.php?page=musician_profile'));
+//     if ( is_user_logged_in() && current_user_can('musician') ) {
+//         wp_redirect( admin_url('admin.php?page=musicians_bands') );
 //         exit;
 //     }
 // }
-// add_action('admin_init', 'deia_redirect_musician_dashboard');
+// add_action( 'admin_init', 'deia_redirect_musician_dashboard' );
+
 
 
 // Enqueue custom js scripts
