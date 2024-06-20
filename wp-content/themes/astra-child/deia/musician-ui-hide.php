@@ -19,6 +19,8 @@ function deia_customize_admin_bar($wp_admin_bar) {
         $wp_admin_bar->remove_node('comments'); // Comments
         $wp_admin_bar->remove_node('new-content'); // New content
         $wp_admin_bar->remove_node('hostinger_admin_bar'); // Hostinger admin bar item
+        $wp_admin_bar->remove_node('hostinger_admin_bar'); // Hostinger admin bar item
+        $wp_admin_bar->remove_node('zip-ai-assistant'); // AI Assistant
     }
 }
 add_action('admin_bar_menu', 'deia_customize_admin_bar', 999);
