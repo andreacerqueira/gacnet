@@ -9,7 +9,7 @@ function deia_add_body_class_for_musicians($classes) {
 add_filter('admin_body_class', 'deia_add_body_class_for_musicians');
 
 
-// Diable items from Admin top bar
+// Diable items from Admin TOP bar
 function deia_customize_admin_bar($wp_admin_bar) {
     if (current_user_can('musician')) {
         // Remove default items
@@ -96,7 +96,7 @@ function deia_customize_musician_admin_menu() {
         remove_menu_page('themes.php'); // Appearance
         remove_menu_page('users.php'); // Users
         remove_menu_page('plugins.php'); // Plugins
-        remove_menu_page('profile.php'); // Profile
+        // remove_menu_page('profile.php'); // Profile
 
         // Add custom pages for musicians
         add_menu_page(
@@ -109,18 +109,70 @@ function deia_customize_musician_admin_menu() {
             2 // Menu position
         );
 
-        add_menu_page(
-            'Profile', // Page title
-            'Profile', // Menu title
-            'read', // Capability
-            'musician_profile', // Menu slug
-            'deia_musician_profile_page', // Callback function
-            'dashicons-admin-users', // Icon
-            3 // Menu position
-        );
+        // add_menu_page(
+        //     'Profile', // Page title
+        //     'Profile', // Menu title
+        //     'read', // Capability
+        //     'musician_profile', // Menu slug
+        //     'deia_musician_profile_page', // Callback function
+        //     'dashicons-admin-users', // Icon
+        //     3 // Menu position
+        // );
     }
 }
 add_action('admin_menu', 'deia_customize_musician_admin_menu', 999); // High priority
+
+
+// Remove specific profile fields for musicians (I'm also hiding via css so it doesnt show up when loading)
+function deia_remove_musician_profile_fields($contactmethods) {
+    if (current_user_can('musician')) {
+        // Remove Visual Editor
+        remove_action('personal_options', 'default_personal_options');
+        // Remove Admin Color Scheme
+        remove_action('admin_color_scheme_picker', 'admin_color_scheme_picker');
+        // Remove Keyboard Shortcuts
+        remove_action('personal_options', 'personal_options');
+        // Remove Language
+        add_filter('user_can_edit_user_language', '__return_false');
+        // Remove About Yourself fields
+        remove_action('show_user_profile', 'user_profile_personal_options');
+        remove_action('edit_user_profile', 'user_profile_personal_options');
+    }
+    return $contactmethods;
+}
+add_filter('user_contactmethods', 'deia_remove_musician_profile_fields', 10, 1);
+
+
+// Remove Keyboard Shortcuts and Admin Color Scheme
+function deia_remove_personal_options($profileuser) {
+    if (current_user_can('musician')) {
+        ?>
+        <script type="text/javascript">
+            jQuery(document).ready(function($) {
+                // Remove the entire "Personal Options" section
+                $('form#your-profile').find('h2').filter(function() {
+                    return $(this).text().trim() === 'Personal Options';
+                }).next('.form-table').remove();
+                $('form#your-profile').find('h2').filter(function() {
+                    return $(this).text().trim() === 'Personal Options';
+                }).remove();
+
+                // Remove the entire "About Yourself" section
+                $('form#your-profile').find('h2').filter(function() {
+                    return $(this).text().trim() === 'About Yourself';
+                }).next('.form-table').remove();
+                $('form#your-profile').find('h2').filter(function() {
+                    return $(this).text().trim() === 'About Yourself';
+                }).remove();
+
+                // Remove the "Application Passwords" section
+                $('#application-passwords-section').remove();
+            });
+        </script>
+        <?php
+    }
+}
+add_action('admin_head', 'deia_remove_personal_options');
 
 
 // Hide admin notices for musicians

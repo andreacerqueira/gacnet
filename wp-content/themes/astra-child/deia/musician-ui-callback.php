@@ -19,6 +19,7 @@ function deia_musician_posts_page() {
 }
 
 
+/*
 // Callback function for musician profile page
 function deia_musician_profile_page() {
     echo '<div class="wrap">';
@@ -29,6 +30,7 @@ function deia_musician_profile_page() {
 
     echo '</div>';
 }
+*/
 
 
 // Callback function for musician details meta box
@@ -120,6 +122,7 @@ function deia_display_musician_posts() {
 }
 
 
+/*
 // Function to display and handle musician profile form
 function deia_musician_profile_form() {
     $current_user = wp_get_current_user();
@@ -166,3 +169,4 @@ function deia_musician_profile_form() {
     </form>
     <?php
 }
+*/
