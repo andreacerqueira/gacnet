@@ -1,33 +1,33 @@
-// jQuery(document).ready(function ($) {
-//   if ($("body").hasClass("role-musician")) {
-//     $("#postdivrich").hide(); // Hide the content editor
-//     $("#minor-publishing-actions").hide(); // Hide the "Save Draft" and "Preview" buttons
-//     $("#save-post").hide(); // Hide the "Save as Draft" button
-//   }
-// });
+// JavaScript for media uploader
+jQuery(document).ready(function ($) {
+  var mediaUploader;
 
-// jQuery(document).ready(function($) {
-//     $('.delete-post').on('click', function(e) {
-//         e.preventDefault();
-//         var postId = $(this).data('post-id');
-//         var nonce = '<?php echo wp_create_nonce('deia-delete-post-nonce'); ?>';
+  $("#upload_musician_image_button").click(function (e) {
+    e.preventDefault();
 
-//         $.ajax({
-//             type: 'POST',
-//             url: ajaxurl,
-//             data: {
-//                 action: 'deia_delete_post',
-//                 nonce: nonce,
-//                 post_id: postId
-//             },
-//             success: function(response) {
-//                 console.log(response);
-//                 // Handle success, e.g., remove the deleted post from the UI
-//             },
-//             error: function(error) {
-//                 console.error(error);
-//                 // Handle error
-//             }
-//         });
-//     });
-// });
+    // If the media frame already exists, reopen it.
+    if (mediaUploader) {
+      mediaUploader.open();
+      return;
+    }
+
+    // Create the media frame.
+    mediaUploader = wp.media.frames.file_frame = wp.media({
+      title: "Choose Image",
+      button: {
+        text: "Choose Image",
+      },
+      multiple: false, // Allow only single image upload
+    });
+
+    // When an image is selected, run a callback.
+    mediaUploader.on("select", function () {
+      var attachment = mediaUploader.state().get("selection").first().toJSON();
+      $("#musician_image").val(attachment.id);
+      $("img").attr("src", attachment.url);
+    });
+
+    // Open the media uploader.
+    mediaUploader.open();
+  });
+});

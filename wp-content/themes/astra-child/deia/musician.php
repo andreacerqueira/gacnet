@@ -42,13 +42,6 @@ function deia_remove_post_editor_for_musicians() {
 add_action('init', 'deia_remove_post_editor_for_musicians');
 
 
-// // Remove page editor
-// function deia_remove_page_editor_support() {
-//     remove_post_type_support('page', 'editor'); // Remove the page editor
-// }
-// add_action('admin_init', 'deia_remove_page_editor_support');
-
-
 // Hide admin menu items for musicians and add custom pages
 function deia_customize_musician_admin_menu() {
     if (current_user_can('musician')) {
@@ -122,15 +115,6 @@ function deia_customize_admin_for_musicians() {
 add_action('admin_enqueue_scripts', 'deia_customize_admin_for_musicians');
 
 
-
-
-
-
-
-
-
-
-
 // // SAVE DRAFT
 // // Conditionally display the save button for musicians
 // function deia_display_save_button() {
@@ -145,14 +129,6 @@ add_action('admin_enqueue_scripts', 'deia_customize_admin_for_musicians');
 // add_action('edit_form_top', 'deia_display_save_button');
 
 
-
-
-
-
-
-
-
-
 // PUBLISH
 // Disable auto save revisions for musicians
 function deia_disable_auto_save_revisions() {
@@ -161,6 +137,7 @@ function deia_disable_auto_save_revisions() {
     }
 }
 add_action('init', 'deia_disable_auto_save_revisions');
+
 
 // Custom publish button for musicians
 function deia_custom_publish_button() {
@@ -174,35 +151,27 @@ function deia_custom_publish_button() {
 }
 add_action('edit_form_top', 'deia_custom_publish_button');
 
-// Change save behavior to publish immediately for musicians
+
+// Change save behavior to publish immediately for musicians and fix slug issue
 function deia_publish_immediately($data, $postarr) {
     if (current_user_can('musician') && $postarr['post_type'] === 'post') {
         // Ensure post status is publish
         $data['post_status'] = 'publish';
 
-        // Generate unique slug if not provided or set as "auto-draft"
-        if (empty($data['post_name']) || $data['post_name'] === 'auto-draft') {
-            $post_title = isset($data['post_title']) ? $data['post_title'] : '';
+        // var_dump($data);
+        // var_dump($postarr);
+        // echo "slug: " . $data['post_name'] . " | title: " . $data['post_title'];
+        // exit;
 
-            // Generate unique slug based on title
-            $data['post_name'] = wp_unique_post_slug(sanitize_title($post_title), $postarr['ID'], $postarr['post_status'], $postarr['post_type'], $postarr['post_parent']);
-        }
+        // Generate unique slug
+        $post_title = isset($data['post_title']) ? $data['post_title'] : '';
+
+        // Generate unique slug based on title
+        $data['post_name'] = wp_unique_post_slug(sanitize_title($post_title), $postarr['ID'], $postarr['post_status'], $postarr['post_type'], $postarr['post_parent']);
     }
     return $data;
 }
 add_filter('wp_insert_post_data', 'deia_publish_immediately', 10, 2);
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 // Modify the <h1> heading on "Add New Post" and "Edit Post" pages for musicians
@@ -274,16 +243,33 @@ function deia_add_body_class_for_musicians($classes) {
 add_filter('admin_body_class', 'deia_add_body_class_for_musicians');
 
 
-function deia_restrict_media_library_access() {
-    if (current_user_can('musician')) {
+// Modify capabilities for the musician role
+function restrict_musician_media_library_access() {
+    // Get the musician role object
+    $role = get_role('musician');
+    
+    // Check if the role object is retrieved successfully
+    if ($role !== null) {
+        // Remove the capability to upload files
+        $role->remove_cap('upload_files');
+    }
+}
+add_action('init', 'restrict_musician_media_library_access');
+
+
+// Restrict media library access to the user's own uploads
+function restrict_media_library_access($query) {
+    if (!current_user_can('administrator')) {
         global $pagenow;
-        if ($pagenow === 'upload.php' || $pagenow === 'media-new.php') {
-            wp_redirect(admin_url());
-            exit;
+
+        if (in_array($pagenow, array('upload.php', 'admin-ajax.php'))) {
+            if (isset($query->query['post_type']) && $query->query['post_type'] === 'attachment') {
+                $query->set('author', get_current_user_id());
+            }
         }
     }
 }
-add_action('admin_init', 'deia_restrict_media_library_access');
+add_action('pre_get_posts', 'restrict_media_library_access');
 
 
 // Callback function for "My Posts" page
@@ -492,14 +478,20 @@ function deia_save_musician_details($post_id) {
         return;
     }
 
+    // Prevent saving during autosave or ajax requests
     if (defined('DOING_AUTOSAVE') && DOING_AUTOSAVE) {
         return;
     }
 
+    // Check permissions
     if (!current_user_can('edit_post', $post_id)) {
         return;
     }
 
+    // var_dump($_POST);
+    // exit;
+
+    // Sanitize and update musician details
     $fields = array(
         'musician_email',
         'musician_website',
@@ -510,13 +502,19 @@ function deia_save_musician_details($post_id) {
         'musician_facebook',
         'musician_tiktok',
         'musician_events',
-        'musician_bio'
+        'musician_bio',
+        'musician_image',
     );
 
     foreach ($fields as $field) {
         if (isset($_POST[$field])) {
             update_post_meta($post_id, $field, sanitize_text_field($_POST[$field]));
         }
+    }
+    
+    // Handle image upload separately to ensure security
+    if (isset($_POST['musician_image'])) {
+        update_post_meta($post_id, 'musician_image', sanitize_text_field($_POST['musician_image']));
     }
 }
 add_action('save_post', 'deia_save_musician_details');
@@ -545,6 +543,7 @@ function deia_metaboxes() {
         remove_meta_box('tagsdiv-post_tag', 'post', 'side'); // Tags meta box
         remove_meta_box('postcustom', 'post', 'normal'); // Custom fields meta box
         remove_meta_box('slugdiv', 'post', 'normal'); // Slug meta box
+        remove_meta_box('edit-slug-box', 'post', 'normal'); // Slug meta box
         remove_meta_box('authordiv', 'post', 'normal'); // Author meta box
         remove_meta_box('revisionsdiv', 'post', 'normal'); // Revisions meta box
         remove_meta_box('postexcerpt', 'post', 'normal'); // Excerpt meta box
@@ -583,22 +582,54 @@ function deia_musician_callback($post) {
         'musician_tiktok' => 'TikTok',
         'musician_events' => 'Events',
         'musician_bio' => 'Biography',
+        'musician_image' => 'Upload Image',
     );
 
     echo '<div class="deia-form">';
     foreach ($fields as $key => $label) {
         $value = get_post_meta($post->ID, $key, true);
+        $musician_image = get_post_meta($post->ID, 'musician_image', true);
+        $musician_image_url = $musician_image ? wp_get_attachment_image_url($musician_image, 'thumbnail') : '';
+
         echo '<div class="row">';
         echo '<label for="' . $key . '">' . $label . ':</label>';
+
         if ($key == 'musician_events' || $key == 'musician_bio') {
             echo '<textarea id="' . $key . '" name="' . $key . '" rows="5" cols="50">' . esc_textarea($value) . '</textarea>';
+        } elseif ($key == 'musician_image') {
+            echo '<input type="hidden" name="musician_image" id="musician_image" value="' . esc_attr($musician_image) . '">';
+            echo '<img src="' . esc_url($musician_image_url) . '" style="max-width: 150px; height: auto; margin-bottom: 10px;"><br>';
+            echo '<input type="button" id="upload_musician_image_button" class="button" value="Upload Image">';
         } else {
             echo '<input type="text" id="' . $key . '" name="' . $key . '" value="' . esc_attr($value) . '" size="25" />';
         }
+
         echo '</div>';
     }
     echo '</div>';
 }
+
+
+// Enqueue scripts for media uploader
+function deia_enqueue_media_uploader_scripts($hook) {
+    global $post;
+
+    if ($hook == 'post-new.php' || $hook == 'post.php') {
+        if ('post' === $post->post_type) {
+            wp_enqueue_media();
+
+            // Include custom script to handle media uploader
+            wp_enqueue_script('deia-media-uploader', get_template_directory_uri() . '/js/media-uploader.js', array('jquery'), null, true);
+
+            // Pass nonce and current post ID to the script
+            wp_localize_script('deia-media-uploader', 'deiaMediaUploader', array(
+                'nonce' => wp_create_nonce('deia-media-uploader-nonce'),
+                'post_id' => $post->ID,
+            ));
+        }
+    }
+}
+add_action('admin_enqueue_scripts', 'deia_enqueue_media_uploader_scripts');
 
 
 // Filter to allow musicians to edit their own posts only

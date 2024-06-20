@@ -8,6 +8,7 @@ body.role-musician #notice,
 body.role-musician #wpfooter,
 body.role-musician #screen-meta-links,
 body.role-musician #screen-meta,
+body.role-musician #menu-item-zipwpimages,
 body.role-musician #musician_details .handle-actions {
   display: none !important;
 }
