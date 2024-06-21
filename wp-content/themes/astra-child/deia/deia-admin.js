@@ -20,11 +20,37 @@ jQuery(document).ready(function ($) {
       multiple: true,
     });
 
-    // When an image is selected, run a callback.
+    // // When an image is selected, run a callback.
+    // mediaUploader.on("select", function () {
+    //   var attachment = mediaUploader.state().get("selection").first().toJSON();
+    //   $("#musician_image").val(attachment.id);
+    //   $("#image-preview").attr("src", attachment.url);
+    // });
+
+    // When images are selected, run a callback.
     mediaUploader.on("select", function () {
-      var attachment = mediaUploader.state().get("selection").first().toJSON();
-      $("#musician_image").val(attachment.id);
-      $("#image-preview").attr("src", attachment.url);
+      var attachments = mediaUploader.state().get("selection").toJSON();
+      var imageIds = [];
+      var imageUrls = [];
+
+      // Loop through each selected attachment
+      attachments.forEach(function (attachment) {
+        imageIds.push(attachment.id);
+        imageUrls.push(attachment.url);
+      });
+
+      // Update the hidden input field with image IDs
+      $("#musician_image").val(imageIds.join(",")); // Assuming musician_image is a hidden input
+
+      // Display selected images previews
+      $("#image-preview").empty(); // Clear previous previews
+      imageUrls.forEach(function (imageUrl) {
+        $("#image-preview").append(
+          '<img src="' +
+            imageUrl +
+            '" style="max-width: 150px; height: auto; margin-right: 10px;">'
+        );
+      });
     });
 
     // Open the media uploader.

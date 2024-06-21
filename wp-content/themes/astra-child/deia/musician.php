@@ -252,9 +252,19 @@ function deia_save_musician_details($post_id) {
                     $musician_bio = wp_kses_post($_POST[$field]); // Allow basic HTML tags
                     update_post_meta($post_id, $field, $musician_bio);
                     break;
+                // case 'musician_image':
+                //     $image_id = intval($_POST[$field]); // Ensure it's a valid URL
+                //     update_post_meta($post_id, $field, $image_id);
+                //     break;
                 case 'musician_image':
-                    $image_id = intval($_POST[$field]); // Ensure it's a valid URL
-                    update_post_meta($post_id, $field, $image_id);
+                    // Handle multiple images by converting array to comma-separated string
+                    $image_ids = isset($_POST['musician_image']) ? $_POST['musician_image'] : array(); // Ensure it's an array
+                    if (is_array($image_ids)) {
+                        $image_ids_str = implode(',', $image_ids); // Convert array to comma-separated string
+                    } else {
+                        $image_ids_str = sanitize_text_field($image_ids); // Handle the single image case if needed
+                    }
+                    update_post_meta($post_id, $field, $image_ids_str); // Update post meta with the string of image IDs
                     break;
                 default:
                     $value = sanitize_text_field($_POST[$field]);
