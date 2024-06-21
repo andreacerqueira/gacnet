@@ -17,7 +17,7 @@ jQuery(document).ready(function ($) {
     // Create the media frame.
     mediaUploader = wp.media.frames.file_frame = wp.media({
       title: "Choose/Upload Image",
-      multiple: true,
+      multiple: false,
     });
 
     // When an image is selected, run a callback.
