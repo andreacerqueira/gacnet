@@ -28,7 +28,7 @@ function deia_musician_callback($post) {
         'musician_website' => 'Website',
         'musician_spotify' => 'Spotify',
         'musician_youtube' => 'YouTube',
-        'musician_vimeo' => 'Vimeo',
+        'musician_youtube_music' => 'Youtube Music',
         'musician_twitter' => 'Twitter',
         'musician_facebook' => 'Facebook',
         'musician_tiktok' => 'TikTok',

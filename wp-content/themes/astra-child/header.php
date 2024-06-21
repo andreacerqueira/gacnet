@@ -44,8 +44,56 @@ if ( apply_filters( 'astra_header_profile_gmpg_link', true ) ) {
 		<?php echo esc_html( astra_default_strings( 'string-header-skip-link', false ) ); ?>
 </a>
 
+<?php if ( in_category('musicians') ) : ?>
+    <?php
+    $image_header = get_post_meta(get_the_ID(), 'musician_header_image', true);
+    $musician_image_header_url = $image_header ? wp_get_attachment_image_url($image_header, 'full') : '';
+    ?>
+    <?php if ( !empty($musician_image_header_url) ) : ?>
+    <style>
+        .musician-header {
+			position: absolute;
+			top: 0;
+			left: 0;
+            background-image: url('<?php echo esc_url($musician_image_header_url); ?>');
+            background-size: cover;
+            background-position: top center;
+			height: 1000px;
+			width: 100%;
+			z-index: 0;
+        }
+		.musician-header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            left: 0;
+			/* Adjust the 50% value to occupy more space */
+            /* background: linear-gradient(to bottom, rgba(0, 0, 0, 1) 10%, rgba(0, 0, 0, 0.7) 60%); */
+			background: linear-gradient(to bottom, rgba(0, 0, 0, 0.85) 0%, rgba(0, 0, 0, 1) 90%);
+            z-index: 1;
+        }
+        .musician-header-content {
+            position: relative;
+            z-index: 2; /* Ensure the content is above the gradient overlay */
+        }
+    </style>
+    <div class="musician-header">
+        <div class="musician-header-content">
+            <!-- You can place any additional content here if needed -->
+        </div>
+    </div>
+    <?php endif; ?>
+<?php endif; ?>
+
 <div
 <?php
+	$musician_header_image_style = '';
+	if ( is_singular('musicians') ) {
+		$musician_header_image_style = 'style="background-image: url(' . esc_url(get_post_meta(get_the_ID(), 'musician_header_image', true)) . ');"';
+	}
+
 	echo astra_attr(
 		'site',
 		array(

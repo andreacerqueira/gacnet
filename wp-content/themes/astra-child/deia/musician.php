@@ -216,7 +216,7 @@ function deia_save_musician_details($post_id) {
         'musician_website',
         'musician_spotify',
         'musician_youtube',
-        'musician_vimeo',
+        'musician_youtube_music',
         'musician_twitter',
         'musician_facebook',
         'musician_tiktok',
@@ -239,7 +239,7 @@ function deia_save_musician_details($post_id) {
                 case 'musician_website':
                 case 'musician_spotify':
                 case 'musician_youtube':
-                case 'musician_vimeo':
+                case 'musician_youtube_music':
                 case 'musician_twitter':
                 case 'musician_facebook':
                 case 'musician_tiktok':

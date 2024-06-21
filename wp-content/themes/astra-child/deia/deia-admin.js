@@ -79,7 +79,7 @@ jQuery(document).ready(function ($) {
       musician_youtube: {
         url: true,
       },
-      musician_vimeo: {
+      musician_youtube_music: {
         url: true,
       },
       musician_twitter: {
@@ -106,7 +106,7 @@ jQuery(document).ready(function ($) {
       musician_youtube: {
         url: "Please enter a valid URL.",
       },
-      musician_vimeo: {
+      musician_youtube_music: {
         url: "Please enter a valid URL.",
       },
       musician_twitter: {

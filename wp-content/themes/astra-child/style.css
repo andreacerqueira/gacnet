@@ -141,7 +141,8 @@ textarea:focus {
 }
 
 .site-header.ast-header-slide.ast-sticky-active.ast-header-sticked {
-  background-color: #181818;
+  background-color: #000000;
+  border-bottom: solid 1px #2a2a2a;
 }
 
 .ast-primary-header-bar,

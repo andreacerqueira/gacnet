@@ -10,6 +10,9 @@ if ( ! defined( 'ABSPATH' ) ) {
     exit; // Exit if accessed directly.
 }
 
+$image_header = get_post_meta(get_the_ID(), 'musician_header_image', true);
+$musician_image_header_url = $image_header ? wp_get_attachment_image_url($image_header, 'full') : '';
+
 get_header(); ?>
 
 <div id="primary" <?php astra_primary_class(); ?>>
@@ -26,13 +29,15 @@ get_header(); ?>
             $website = get_post_meta(get_the_ID(), 'musician_website', true);
             $spotify = get_post_meta(get_the_ID(), 'musician_spotify', true);
             $youtube = get_post_meta(get_the_ID(), 'musician_youtube', true);
-            $vimeo = get_post_meta(get_the_ID(), 'musician_vimeo', true);
+            $vimeo = get_post_meta(get_the_ID(), 'musician_youtube_music', true);
             $twitter = get_post_meta(get_the_ID(), 'musician_twitter', true);
             $facebook = get_post_meta(get_the_ID(), 'musician_facebook', true);
             $tiktok = get_post_meta(get_the_ID(), 'musician_tiktok', true);
             $bio = get_post_meta(get_the_ID(), 'musician_bio', true);
+            $image_header = get_post_meta(get_the_ID(), 'musician_header_image', true);
+            $musician_image_header_url = $image ? wp_get_attachment_image_url($image_header, 'full') : '';
             $image = get_post_meta(get_the_ID(), 'musician_image', true);
-            $musician_image_url = $image ? wp_get_attachment_image_url($image, 'thumbnail') : '';
+            $musician_image_url = $image ? wp_get_attachment_image_url($image, 'full') : '';
 
             // Display the content (don't show this, it's the main content)
             // the_content();
@@ -66,7 +71,7 @@ get_header(); ?>
                     <p><?php echo esc_html( $bio ); ?></p>
                 <?php endif; ?>
                 <?php if ( $image ) : ?>
-                    <p>Image: <img src="<?php echo esc_url( $musician_image_url ); ?>"/></p>
+                    <div><img src="<?php echo esc_url( $musician_image_url ); ?>"/></div>
                 <?php endif; ?>
 
             </div>
@@ -80,7 +85,6 @@ get_header(); ?>
 </div><!-- #primary -->
 
 <?php get_footer(); ?>
-
 
 <!-- .musician-details {
     margin-top: 20px;
