@@ -57,23 +57,30 @@ require get_stylesheet_directory() . '/deia/musician-publish.php';
 require get_stylesheet_directory() . '/deia/musician-ui-callback.php';
 
 
-// Enqueue custom js scripts
+// Enqueue custom admin scripts
 function deia_enqueue_custom_admin_scripts() {
     if (current_user_can('musician')) {
+        // Enqueue jQuery Validate from CDN
         wp_enqueue_script('jquery-validate', 'https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.3/jquery.validate.min.js', array('jquery'), '1.19.3', true);
-        wp_enqueue_script('deia-custom-admin-js', get_stylesheet_directory_uri() . '/deia/deia-admin.js', array('jquery', 'jquery-validate'), null, true);
-    }
-}
-add_action('admin_enqueue_scripts', 'deia_enqueue_custom_admin_scripts');
+        
+        // Enqueue WordPress media scripts
+        wp_enqueue_media();
+        
+        // Enqueue custom admin JavaScript
+        wp_enqueue_script('deia-custom-admin-js', get_stylesheet_directory_uri() . '/deia/deia-admin.js', array('jquery', 'jquery-validate', 'wp-mediaelement'), null, true);
+        
+        // Localize script to pass data from PHP to JavaScript
+        // Optionally, you can use `wp_localize_script` to pass PHP data to your JavaScript file. In this example, `deiaAdminParams` is the object name in JavaScript, and ajaxUrl is an example of a parameter that could be passed to your script.
+        // wp_localize_script('deia-custom-admin-js', 'deiaAdminParams', array(
+        //     'ajaxUrl' => admin_url('admin-ajax.php'),
+        //     // Add more parameters as needed
+        // ));
 
-
-// Enqueue custom styles
-function deia_enqueue_custom_admin_styles() {
-    if (current_user_can('musician')) {
+        // Enqueue custom admin styles
         wp_enqueue_style('deia-custom-admin-styles', get_stylesheet_directory_uri() . '/deia/deia-admin.css');
     }
 }
-add_action('admin_enqueue_scripts', 'deia_enqueue_custom_admin_styles');
+add_action('admin_enqueue_scripts', 'deia_enqueue_custom_admin_scripts');
 
 
 // Disable autosave, revisions, and autosave notice for musicians

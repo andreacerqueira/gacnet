@@ -16,18 +16,15 @@ jQuery(document).ready(function ($) {
 
     // Create the media frame.
     mediaUploader = wp.media.frames.file_frame = wp.media({
-      title: "Choose Image",
-      button: {
-        text: "Choose Image",
-      },
-      multiple: false, // Allow only single image upload
+      title: "Choose/Upload Image",
+      multiple: true,
     });
 
     // When an image is selected, run a callback.
     mediaUploader.on("select", function () {
       var attachment = mediaUploader.state().get("selection").first().toJSON();
       $("#musician_image").val(attachment.id);
-      $("#image-preview").attr("src", attachment.url); // Update the image preview
+      $("#image-preview").attr("src", attachment.url);
     });
 
     // Open the media uploader.
