@@ -33,6 +33,7 @@ function deia_musician_callback($post) {
         'musician_facebook' => 'Facebook',
         'musician_tiktok' => 'TikTok',
         'musician_bio' => 'Biography',
+        'musician_header_image' => 'Upload Header Image',
         'musician_image' => 'Upload Image',
     );
 
@@ -41,15 +42,21 @@ function deia_musician_callback($post) {
         $value = get_post_meta($post->ID, $key, true);
         $musician_image = get_post_meta($post->ID, 'musician_image', true);
         $musician_image_url = $musician_image ? wp_get_attachment_image_url($musician_image, 'thumbnail') : '';
+        $musician_header_image = get_post_meta($post->ID, 'musician_header_image', true);
+        $musician_header_image_url = $musician_header_image ? wp_get_attachment_image_url($musician_header_image, 'full') : '';
 
         echo '<div class="row">';
         echo '<label for="' . $key . '">' . $label . ':</label>';
 
         if ($key == 'musician_bio') {
             echo '<textarea id="' . $key . '" name="' . $key . '" rows="15" cols="50">' . esc_textarea($value) . '</textarea>';
+        } elseif ($key == 'musician_header_image') {
+            echo '<input type="hidden" name="musician_header_image" id="musician_header_image" value="' . esc_attr($musician_header_image) . '">';
+            echo '<img src="' . esc_url($musician_header_image_url) . '" id="image-preview-header" style="max-width: 500px; height: auto; margin-bottom: 5px;">';
+            echo '<input type="button" id="upload_musician_header_image_button" class="button" value="Upload Header Image" style="width:fit-content;">';
         } elseif ($key == 'musician_image') {
             echo '<input type="hidden" name="musician_image" id="musician_image" value="' . esc_attr($musician_image) . '">';
-            echo '<img src="' . esc_url($musician_image_url) . '" id="image-preview" style="max-width: 150px; height: auto; margin-bottom: 5px;">';
+            echo '<img src="' . esc_url($musician_image_url) . '" id="image-preview-musician" style="max-width: 150px; height: auto; margin-bottom: 5px;">';
             echo '<input type="button" id="upload_musician_image_button" class="button" value="Upload Image" style="width:fit-content;">';
         } else {
             echo '<input type="text" id="' . $key . '" name="' . $key . '" value="' . esc_attr($value) . '" size="25" />';

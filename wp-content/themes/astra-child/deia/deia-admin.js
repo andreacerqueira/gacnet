@@ -3,6 +3,38 @@ jQuery(document).ready(function ($) {
   // Preventing dragging and dropping things around -----------------------------
   $("#poststuff").find(".meta-box-sortables").removeClass("meta-box-sortables");
 
+  // Header upload image --------------------------------------------------------
+  var mediaHeaderUploader;
+  $("#upload_musician_header_image_button").click(function (e) {
+    e.preventDefault();
+
+    // If the media frame already exists, reopen it.
+    if (mediaHeaderUploader) {
+      mediaHeaderUploader.open();
+      return;
+    }
+
+    // Create the media frame.
+    mediaHeaderUploader = wp.media.frames.file_frame = wp.media({
+      title: "Choose/Upload Header Image",
+      multiple: false,
+    });
+
+    // When an image is selected, run a callback.
+    mediaHeaderUploader.on("select", function () {
+      var attachment = mediaHeaderUploader
+        .state()
+        .get("selection")
+        .first()
+        .toJSON();
+      $("#musician_header_image").val(attachment.id);
+      $("#image-preview-header").attr("src", attachment.url);
+    });
+
+    // Open the media uploader.
+    mediaHeaderUploader.open();
+  });
+
   // Band upload image ----------------------------------------------------------
   var mediaUploader;
   $("#upload_musician_image_button").click(function (e) {
@@ -16,7 +48,7 @@ jQuery(document).ready(function ($) {
 
     // Create the media frame.
     mediaUploader = wp.media.frames.file_frame = wp.media({
-      title: "Choose/Upload Image",
+      title: "Choose/Upload Musician Image",
       multiple: false,
     });
 
@@ -24,7 +56,7 @@ jQuery(document).ready(function ($) {
     mediaUploader.on("select", function () {
       var attachment = mediaUploader.state().get("selection").first().toJSON();
       $("#musician_image").val(attachment.id);
-      $("#image-preview").attr("src", attachment.url);
+      $("#image-preview-musician").attr("src", attachment.url);
     });
 
     // Open the media uploader.

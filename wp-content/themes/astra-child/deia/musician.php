@@ -221,6 +221,7 @@ function deia_save_musician_details($post_id) {
         'musician_facebook',
         'musician_tiktok',
         'musician_bio',
+        'musician_header_image',
         'musician_image',
     );
 
@@ -251,6 +252,10 @@ function deia_save_musician_details($post_id) {
                 case 'musician_bio':
                     $musician_bio = wp_kses_post($_POST[$field]); // Allow basic HTML tags
                     update_post_meta($post_id, $field, $musician_bio);
+                    break;
+                case 'musician_header_image':
+                    $image_header_id = intval($_POST[$field]); // Ensure it's a valid URL
+                    update_post_meta($post_id, $field, $image_header_id);
                     break;
                 case 'musician_image':
                     $image_id = intval($_POST[$field]); // Ensure it's a valid URL
