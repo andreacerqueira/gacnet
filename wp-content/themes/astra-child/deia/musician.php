@@ -60,7 +60,8 @@ require get_stylesheet_directory() . '/deia/musician-ui-callback.php';
 // Enqueue custom js scripts
 function deia_enqueue_custom_admin_scripts() {
     if (current_user_can('musician')) {
-        wp_enqueue_script('deia-custom-admin-js', get_stylesheet_directory_uri() . '/deia/deia-admin.js', array('jquery'), null, true);
+        wp_enqueue_script('jquery-validate', 'https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.3/jquery.validate.min.js', array('jquery'), '1.19.3', true);
+        wp_enqueue_script('deia-custom-admin-js', get_stylesheet_directory_uri() . '/deia/deia-admin.js', array('jquery', 'jquery-validate'), null, true);
     }
 }
 add_action('admin_enqueue_scripts', 'deia_enqueue_custom_admin_scripts');
@@ -155,58 +156,6 @@ function deia_handle_delete_post() {
 add_action('admin_post_deia_delete_post', 'deia_handle_delete_post');
 
 
-// Function to save musician details meta box
-function deia_save_musician_details($post_id) {
-    // error_log('Save post hook triggered for post ID: ' . $post_id);
-
-    // Ensure nonce verification is successful
-    if (!isset($_POST['musician_details_nonce']) || !wp_verify_nonce($_POST['musician_details_nonce'], 'deia_save_musician_details')) {
-        // error_log('Nonce verification failed.');
-        return;
-    }
-
-    // Prevent saving during autosave or ajax requests
-    if (defined('DOING_AUTOSAVE') && DOING_AUTOSAVE) {
-        return;
-    }
-
-    // Check permissions
-    if (!current_user_can('edit_post', $post_id)) {
-        return;
-    }
-
-    // var_dump($_POST);
-    // exit;
-
-    // Sanitize and update musician details
-    $fields = array(
-        'musician_email',
-        'musician_website',
-        'musician_spotify',
-        'musician_youtube',
-        'musician_vimeo',
-        'musician_twitter',
-        'musician_facebook',
-        'musician_tiktok',
-        'musician_events',
-        'musician_bio',
-        'musician_image',
-    );
-
-    foreach ($fields as $field) {
-        if (isset($_POST[$field])) {
-            update_post_meta($post_id, $field, sanitize_text_field($_POST[$field]));
-        }
-    }
-    
-    // Handle image upload separately to ensure security
-    if (isset($_POST['musician_image'])) {
-        update_post_meta($post_id, 'musician_image', sanitize_text_field($_POST['musician_image']));
-    }
-}
-add_action('save_post', 'deia_save_musician_details');
-
-
 // Filter to show only musician's own posts
 function deia_show_only_musician_own_posts($query) {
     if (is_admin() && $query->is_main_query() && current_user_can('musician')) {
@@ -257,3 +206,77 @@ function deia_allow_musician_edit_own_posts($allcaps, $cap, $args) {
     return $allcaps;
 }
 add_filter('user_has_cap', 'deia_allow_musician_edit_own_posts', 10, 3);
+
+
+// Function to save musician details meta box
+function deia_save_musician_details($post_id) {
+    // Ensure nonce verification is successful
+    if (!isset($_POST['musician_details_nonce']) || !wp_verify_nonce($_POST['musician_details_nonce'], 'deia_save_musician_details')) {
+        return;
+    }
+
+    // Prevent saving during autosave or ajax requests
+    if (defined('DOING_AUTOSAVE') && DOING_AUTOSAVE) {
+        return;
+    }
+
+    // Check permissions
+    if (!current_user_can('edit_post', $post_id)) {
+        return;
+    }
+
+    // Define the fields to sanitize
+    $fields = array(
+        'musician_email',
+        'musician_website',
+        'musician_spotify',
+        'musician_youtube',
+        'musician_vimeo',
+        'musician_twitter',
+        'musician_facebook',
+        'musician_tiktok',
+        'musician_bio',
+        'musician_image',
+    );
+
+    // Sanitize and update musician details
+    foreach ($fields as $field) {
+        if (isset($_POST[$field])) {
+            switch ($field) {
+                case 'musician_email':
+                    $musician_email = sanitize_email($_POST[$field]);
+                    if (!empty($musician_email) && !is_email($musician_email)) {
+                        return; // Exit early if email is invalid
+                    }
+                    update_post_meta($post_id, $field, $musician_email);
+                    break;
+                case 'musician_website':
+                case 'musician_spotify':
+                case 'musician_youtube':
+                case 'musician_vimeo':
+                case 'musician_twitter':
+                case 'musician_facebook':
+                case 'musician_tiktok':
+                    $url = esc_url_raw($_POST[$field]);
+                    if (!empty($url) && !filter_var($url, FILTER_VALIDATE_URL)) {
+                        return; // Exit early if URL is invalid
+                    }
+                    update_post_meta($post_id, $field, $url);
+                    break;
+                case 'musician_bio':
+                    $musician_bio = wp_kses_post($_POST[$field]); // Allow basic HTML tags
+                    update_post_meta($post_id, $field, $musician_bio);
+                    break;
+                case 'musician_image':
+                    $image_url_or_id = esc_url($_POST[$field]); // Ensure it's a valid URL
+                    update_post_meta($post_id, $field, $image_url_or_id);
+                    break;
+                default:
+                    $value = sanitize_text_field($_POST[$field]);
+                    update_post_meta($post_id, $field, $value);
+                    break;
+            }
+        }
+    }
+}
+add_action('save_post', 'deia_save_musician_details');

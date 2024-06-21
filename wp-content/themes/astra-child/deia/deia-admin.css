@@ -54,6 +54,15 @@ body.role-musician #publishing-action {
   font-weight: bold;
 }
 
+.deia-form .row input.error {
+  border: 1px solid red;
+}
+
+.deia-form .row label.error {
+  color: red;
+  font-weight: normal;
+}
+
 .deia-list-block {
   margin: 20px 0 0 0;
   padding: 0;

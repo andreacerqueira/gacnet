@@ -32,7 +32,6 @@ function deia_musician_callback($post) {
         'musician_twitter' => 'Twitter',
         'musician_facebook' => 'Facebook',
         'musician_tiktok' => 'TikTok',
-        'musician_events' => 'Events',
         'musician_bio' => 'Biography',
         'musician_image' => 'Upload Image',
     );
@@ -46,8 +45,8 @@ function deia_musician_callback($post) {
         echo '<div class="row">';
         echo '<label for="' . $key . '">' . $label . ':</label>';
 
-        if ($key == 'musician_events' || $key == 'musician_bio') {
-            echo '<textarea id="' . $key . '" name="' . $key . '" rows="5" cols="50">' . esc_textarea($value) . '</textarea>';
+        if ($key == 'musician_bio') {
+            echo '<textarea id="' . $key . '" name="' . $key . '" rows="15" cols="50">' . esc_textarea($value) . '</textarea>';
         } elseif ($key == 'musician_image') {
             echo '<input type="hidden" name="musician_image" id="musician_image" value="' . esc_attr($musician_image) . '">';
             echo '<img src="' . esc_url($musician_image_url) . '" style="max-width: 150px; height: auto; margin-bottom: 10px;"><br>';

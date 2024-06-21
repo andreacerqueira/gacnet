@@ -1,4 +1,4 @@
-// JavaScript for media uploader
+// JavaScript for media uploader ----------------------
 jQuery(document).ready(function ($) {
   var mediaUploader;
 
@@ -29,5 +29,72 @@ jQuery(document).ready(function ($) {
 
     // Open the media uploader.
     mediaUploader.open();
+  });
+
+  // Validation ----------------------------------------
+  $("#post").validate({
+    rules: {
+      musician_email: {
+        required: true,
+        email: true,
+      },
+      musician_website: {
+        url: true,
+      },
+      musician_spotify: {
+        url: true,
+      },
+      musician_youtube: {
+        url: true,
+      },
+      musician_vimeo: {
+        url: true,
+      },
+      musician_twitter: {
+        url: true,
+      },
+      musician_facebook: {
+        url: true,
+      },
+      musician_tiktok: {
+        url: true,
+      },
+      musician_image: {
+        url: true,
+      },
+    },
+    messages: {
+      musician_email: {
+        required: "Please enter an email address.",
+        email: "Please enter a valid email address.",
+      },
+      musician_website: {
+        url: "Please enter a valid URL.",
+      },
+      musician_spotify: {
+        url: "Please enter a valid URL.",
+      },
+      musician_youtube: {
+        url: "Please enter a valid URL.",
+      },
+      musician_vimeo: {
+        url: "Please enter a valid URL.",
+      },
+      musician_twitter: {
+        url: "Please enter a valid URL.",
+      },
+      musician_facebook: {
+        url: "Please enter a valid URL.",
+      },
+      musician_tiktok: {
+        url: "Please enter a valid URL.",
+      },
+      musician_image: {
+        url: "Please enter a valid URL.",
+      },
+    },
+    submitHandler: function (form) {
+      form.submit();
+    },
   });
 });
