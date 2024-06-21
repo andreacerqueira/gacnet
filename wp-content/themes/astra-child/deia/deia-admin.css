@@ -13,6 +13,20 @@ body.role-musician #musician_details .handle-actions {
   display: none !important;
 }
 
+/* Default Profile PAge */
+form#your-profile h2,
+.form-table .user-rich-editing-wrap,
+.form-table .user-syntax-highlighting-wrap,
+.form-table .user-admin-color-wrap,
+.form-table .user-comment-shortcuts-wrap,
+.form-table .show-admin-bar,
+.form-table .user-language-wrap,
+.form-table .user-description-wrap,
+.form-table .user-profile-picture,
+#application-passwords-section {
+  display: none !important;
+}
+
 body.role-musician #publishing-action {
   float: unset;
   position: fixed;
