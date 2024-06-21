@@ -27,7 +27,7 @@ form#your-profile h2,
   display: none !important;
 }
 
-body.role-musician #publishing-action {
+/* body.role-musician #publishing-action {
   float: unset;
   position: fixed;
   bottom: 0;
@@ -36,7 +36,7 @@ body.role-musician #publishing-action {
   width: -webkit-fill-available;
   left: 160px;
   z-index: 100;
-}
+} */
 
 .deia-form {
   display: flex;

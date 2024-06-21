@@ -19,7 +19,7 @@ function deia_custom_publish_button() {
         echo '</div>';
     }
 }
-add_action('edit_form_top', 'deia_custom_publish_button');
+add_action('edit_form_advanced', 'deia_custom_publish_button');
 
 
 // Change save behavior to publish immediately for musicians and fix slug issue

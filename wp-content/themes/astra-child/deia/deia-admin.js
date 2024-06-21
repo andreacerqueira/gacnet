@@ -1,7 +1,10 @@
-// JavaScript for media uploader ----------------------
+// JavaScript for media uploader ------------------------------------------------
 jQuery(document).ready(function ($) {
-  var mediaUploader;
+  // Preventing dragging and dropping things around -----------------------------
+  $("#poststuff").find(".meta-box-sortables").removeClass("meta-box-sortables");
 
+  // Band upload image ----------------------------------------------------------
+  var mediaUploader;
   $("#upload_musician_image_button").click(function (e) {
     e.preventDefault();
 
@@ -31,7 +34,7 @@ jQuery(document).ready(function ($) {
     mediaUploader.open();
   });
 
-  // Validation ----------------------------------------
+  // Validation -----------------------------------------------------------------
   $("#post").validate({
     rules: {
       musician_email: {
