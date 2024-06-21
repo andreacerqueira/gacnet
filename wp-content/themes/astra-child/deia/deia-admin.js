@@ -76,10 +76,13 @@ jQuery(document).ready(function ($) {
       musician_spotify: {
         url: true,
       },
-      musician_youtube: {
+      musician_apple_music: {
         url: true,
       },
       musician_youtube_music: {
+        url: true,
+      },
+      musician_youtube: {
         url: true,
       },
       musician_twitter: {
@@ -103,10 +106,13 @@ jQuery(document).ready(function ($) {
       musician_spotify: {
         url: "Please enter a valid URL.",
       },
-      musician_youtube: {
+      musician_apple_music: {
         url: "Please enter a valid URL.",
       },
       musician_youtube_music: {
+        url: "Please enter a valid URL.",
+      },
+      musician_youtube: {
         url: "Please enter a valid URL.",
       },
       musician_twitter: {

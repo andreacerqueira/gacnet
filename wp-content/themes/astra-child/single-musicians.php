@@ -28,8 +28,9 @@ get_header(); ?>
             $email = get_post_meta(get_the_ID(), 'musician_email', true);
             $website = get_post_meta(get_the_ID(), 'musician_website', true);
             $spotify = get_post_meta(get_the_ID(), 'musician_spotify', true);
+            $apple_music = get_post_meta(get_the_ID(), 'musician_apple_music', true);
+            $youtube_music = get_post_meta(get_the_ID(), 'musician_youtube_music', true);
             $youtube = get_post_meta(get_the_ID(), 'musician_youtube', true);
-            $vimeo = get_post_meta(get_the_ID(), 'musician_youtube_music', true);
             $twitter = get_post_meta(get_the_ID(), 'musician_twitter', true);
             $facebook = get_post_meta(get_the_ID(), 'musician_facebook', true);
             $tiktok = get_post_meta(get_the_ID(), 'musician_tiktok', true);
@@ -44,28 +45,31 @@ get_header(); ?>
         ?>
             <div class="musician-details">
                 <?php if ( $email ) : ?>
-                    <p>Email: <?php echo esc_html( $email ); ?></p>
+                    <p><a href="mailto:<?php echo esc_html( $email ); ?>">Email</a></p>
                 <?php endif; ?>
                 <?php if ( $website ) : ?>
-                    <p>Website: <?php echo esc_url( $website ); ?></p>
+                    <p><a href="<?php echo esc_url( $website ); ?>" target="_blank">Website</a></p>
                 <?php endif; ?>
                 <?php if ( $spotify ) : ?>
-                    <p>Spotify: <a href="<?php echo esc_url( $spotify ); ?>" target="_blank">Listen</a></p>
+                    <p><a href="<?php echo esc_url( $spotify ); ?>" target="_blank">Spotify</a></p>
+                <?php endif; ?>
+                <?php if ( $apple_music ) : ?>
+                    <p><a href="<?php echo esc_url( $apple_music ); ?>" target="_blank">Apple Music</a></p>
+                <?php endif; ?>
+                <?php if ( $youtube_music ) : ?>
+                    <p><a href="<?php echo esc_url( $youtube_music ); ?>" target="_blank">Youtube Music</a></p>
                 <?php endif; ?>
                 <?php if ( $youtube ) : ?>
-                    <p>YouTube: <a href="<?php echo esc_url( $youtube ); ?>" target="_blank">Watch</a></p>
-                <?php endif; ?>
-                <?php if ( $vimeo ) : ?>
-                    <p>Vimeo: <a href="<?php echo esc_url( $vimeo ); ?>" target="_blank">Watch</a></p>
+                    <p><a href="<?php echo esc_url( $youtube ); ?>" target="_blank">YouTube</a></p>
                 <?php endif; ?>
                 <?php if ( $twitter ) : ?>
-                    <p>Twitter: <a href="<?php echo esc_url( $twitter ); ?>" target="_blank">Follow</a></p>
+                    <p><a href="<?php echo esc_url( $twitter ); ?>" target="_blank">Twitter</a></p>
                 <?php endif; ?>
                 <?php if ( $facebook ) : ?>
-                    <p>Facebook: <a href="<?php echo esc_url( $facebook ); ?>" target="_blank">Follow</a></p>
+                    <p><a href="<?php echo esc_url( $facebook ); ?>" target="_blank">Facebook</a></p>
                 <?php endif; ?>
                 <?php if ( $tiktok ) : ?>
-                    <p>Tiktok: <a href="<?php echo esc_url( $tiktok ); ?>" target="_blank">Follow</a></p>
+                    <p><a href="<?php echo esc_url( $tiktok ); ?>" target="_blank">Tiktok</a></p>
                 <?php endif; ?>
                 <?php if ( $bio ) : ?>
                     <p><?php echo esc_html( $bio ); ?></p>
