@@ -22,18 +22,27 @@ get_header(); ?>
             the_title('<h1>', '</h1>');
             
             // Custom fields for musicians
-            $contact = get_post_meta(get_the_ID(), 'musician_contact', true);
+            $email = get_post_meta(get_the_ID(), 'musician_email', true);
+            $website = get_post_meta(get_the_ID(), 'musician_website', true);
             $spotify = get_post_meta(get_the_ID(), 'musician_spotify', true);
             $youtube = get_post_meta(get_the_ID(), 'musician_youtube', true);
+            $vimeo = get_post_meta(get_the_ID(), 'musician_vimeo', true);
             $twitter = get_post_meta(get_the_ID(), 'musician_twitter', true);
-            $events = get_post_meta(get_the_ID(), 'musician_events', true);
+            $facebook = get_post_meta(get_the_ID(), 'musician_facebook', true);
+            $tiktok = get_post_meta(get_the_ID(), 'musician_tiktok', true);
+            $bio = get_post_meta(get_the_ID(), 'musician_bio', true);
+            $image = get_post_meta(get_the_ID(), 'musician_image', true);
+            $musician_image_url = $image ? wp_get_attachment_image_url($image, 'thumbnail') : '';
 
-            // Display the content
-            the_content();
+            // Display the content (don't show this, it's the main content)
+            // the_content();
         ?>
             <div class="musician-details">
-                <?php if ( $contact ) : ?>
-                    <p>Contact: <?php echo esc_html( $contact ); ?></p>
+                <?php if ( $email ) : ?>
+                    <p>Email: <?php echo esc_html( $email ); ?></p>
+                <?php endif; ?>
+                <?php if ( $website ) : ?>
+                    <p>Website: <?php echo esc_url( $website ); ?></p>
                 <?php endif; ?>
                 <?php if ( $spotify ) : ?>
                     <p>Spotify: <a href="<?php echo esc_url( $spotify ); ?>" target="_blank">Listen</a></p>
@@ -41,17 +50,25 @@ get_header(); ?>
                 <?php if ( $youtube ) : ?>
                     <p>YouTube: <a href="<?php echo esc_url( $youtube ); ?>" target="_blank">Watch</a></p>
                 <?php endif; ?>
+                <?php if ( $vimeo ) : ?>
+                    <p>Vimeo: <a href="<?php echo esc_url( $vimeo ); ?>" target="_blank">Watch</a></p>
+                <?php endif; ?>
                 <?php if ( $twitter ) : ?>
                     <p>Twitter: <a href="<?php echo esc_url( $twitter ); ?>" target="_blank">Follow</a></p>
                 <?php endif; ?>
-                <?php if ( $events ) : ?>
-                    <h3>Upcoming Events:</h3>
-                    <ul>
-                        <?php foreach ( $events as $event ) : ?>
-                            <li><?php echo esc_html( $event ); ?></li>
-                        <?php endforeach; ?>
-                    </ul>
+                <?php if ( $facebook ) : ?>
+                    <p>Facebook: <a href="<?php echo esc_url( $facebook ); ?>" target="_blank">Follow</a></p>
                 <?php endif; ?>
+                <?php if ( $tiktok ) : ?>
+                    <p>Tiktok: <a href="<?php echo esc_url( $tiktok ); ?>" target="_blank">Follow</a></p>
+                <?php endif; ?>
+                <?php if ( $bio ) : ?>
+                    <p><?php echo esc_html( $bio ); ?></p>
+                <?php endif; ?>
+                <?php if ( $image ) : ?>
+                    <p>Image: <img src="<?php echo esc_url( $musician_image_url ); ?>"/></p>
+                <?php endif; ?>
+
             </div>
         <?php
         endwhile;

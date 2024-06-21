@@ -49,7 +49,7 @@ function deia_musician_callback($post) {
             echo '<textarea id="' . $key . '" name="' . $key . '" rows="15" cols="50">' . esc_textarea($value) . '</textarea>';
         } elseif ($key == 'musician_image') {
             echo '<input type="hidden" name="musician_image" id="musician_image" value="' . esc_attr($musician_image) . '">';
-            echo '<img src="' . esc_url($musician_image_url) . '" style="max-width: 150px; height: auto; margin-bottom: 10px;"><br>';
+            echo '<img src="' . esc_url($musician_image_url) . '" id="image-preview" style="max-width: 150px; height: auto; margin-bottom: 10px;"><br>';
             echo '<input type="button" id="upload_musician_image_button" class="button" value="Upload Image">';
         } else {
             echo '<input type="text" id="' . $key . '" name="' . $key . '" value="' . esc_attr($value) . '" size="25" />';

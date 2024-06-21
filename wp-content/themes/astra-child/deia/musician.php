@@ -165,28 +165,6 @@ function deia_show_only_musician_own_posts($query) {
 add_action('pre_get_posts', 'deia_show_only_musician_own_posts');
 
 
-// Enqueue scripts for media uploader
-function deia_enqueue_media_uploader_scripts($hook) {
-    global $post;
-
-    if ($hook == 'post-new.php' || $hook == 'post.php') {
-        if ('post' === $post->post_type) {
-            wp_enqueue_media();
-
-            // Include custom script to handle media uploader
-            wp_enqueue_script('deia-media-uploader', get_template_directory_uri() . '/js/media-uploader.js', array('jquery'), null, true);
-
-            // Pass nonce and current post ID to the script
-            wp_localize_script('deia-media-uploader', 'deiaMediaUploader', array(
-                'nonce' => wp_create_nonce('deia-media-uploader-nonce'),
-                'post_id' => $post->ID,
-            ));
-        }
-    }
-}
-add_action('admin_enqueue_scripts', 'deia_enqueue_media_uploader_scripts');
-
-
 // Filter to allow musicians to edit their own posts only
 function deia_allow_musician_edit_own_posts($allcaps, $cap, $args) {
     if (isset($args[2]) && 'edit_post' == $args[0]) {
@@ -268,8 +246,8 @@ function deia_save_musician_details($post_id) {
                     update_post_meta($post_id, $field, $musician_bio);
                     break;
                 case 'musician_image':
-                    $image_url_or_id = esc_url($_POST[$field]); // Ensure it's a valid URL
-                    update_post_meta($post_id, $field, $image_url_or_id);
+                    $image_id = intval($_POST[$field]); // Ensure it's a valid URL
+                    update_post_meta($post_id, $field, $image_id);
                     break;
                 default:
                     $value = sanitize_text_field($_POST[$field]);

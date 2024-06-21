@@ -27,7 +27,7 @@ jQuery(document).ready(function ($) {
     mediaUploader.on("select", function () {
       var attachment = mediaUploader.state().get("selection").first().toJSON();
       $("#musician_image").val(attachment.id);
-      $("img").attr("src", attachment.url);
+      $("#image-preview").attr("src", attachment.url); // Update the image preview
     });
 
     // Open the media uploader.
@@ -38,7 +38,7 @@ jQuery(document).ready(function ($) {
   $("#post").validate({
     rules: {
       musician_email: {
-        required: true,
+        // required: true,
         email: true,
       },
       musician_website: {
@@ -62,13 +62,10 @@ jQuery(document).ready(function ($) {
       musician_tiktok: {
         url: true,
       },
-      musician_image: {
-        url: true,
-      },
     },
     messages: {
       musician_email: {
-        required: "Please enter an email address.",
+        // required: "Please enter an email address.",
         email: "Please enter a valid email address.",
       },
       musician_website: {
@@ -90,9 +87,6 @@ jQuery(document).ready(function ($) {
         url: "Please enter a valid URL.",
       },
       musician_tiktok: {
-        url: "Please enter a valid URL.",
-      },
-      musician_image: {
         url: "Please enter a valid URL.",
       },
     },
