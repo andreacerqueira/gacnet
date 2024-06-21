@@ -1,18 +1,4 @@
 <?php
-// // SAVE DRAFT
-// // Conditionally display the save button for musicians
-// function deia_display_save_button() {
-//     global $pagenow;
-
-//     if (current_user_can('musician') && in_array($pagenow, array('post-new.php', 'post.php'))) {
-//         echo '<div id="publishing-action">';
-//         echo '<button type="submit" name="save" id="save-post" class="button button-primary button-large">Save</button>';
-//         echo '</div>';
-//     }
-// }
-// add_action('edit_form_top', 'deia_display_save_button');
-
-
 // PUBLISH
 // Disable auto save revisions for musicians
 function deia_disable_auto_save_revisions() {

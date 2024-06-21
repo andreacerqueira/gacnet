@@ -108,16 +108,6 @@ function deia_customize_musician_admin_menu() {
             'dashicons-format-audio', // Icon
             2 // Menu position
         );
-
-        // add_menu_page(
-        //     'Profile', // Page title
-        //     'Profile', // Menu title
-        //     'read', // Capability
-        //     'musician_profile', // Menu slug
-        //     'deia_musician_profile_page', // Callback function
-        //     'dashicons-admin-users', // Icon
-        //     3 // Menu position
-        // );
     }
 }
 add_action('admin_menu', 'deia_customize_musician_admin_menu', 999); // High priority

@@ -19,20 +19,6 @@ function deia_musician_posts_page() {
 }
 
 
-/*
-// Callback function for musician profile page
-function deia_musician_profile_page() {
-    echo '<div class="wrap">';
-    echo '<h1>Profile</h1>';
-
-    // Display profile form
-    deia_musician_profile_form();
-
-    echo '</div>';
-}
-*/
-
-
 // Callback function for musician details meta box
 function deia_musician_callback($post) {
     wp_nonce_field('deia_save_musician_details', 'musician_details_nonce');
@@ -120,53 +106,3 @@ function deia_display_musician_posts() {
         echo '<p>No posts found.</p>';
     }
 }
-
-
-/*
-// Function to display and handle musician profile form
-function deia_musician_profile_form() {
-    $current_user = wp_get_current_user();
-
-    if (isset($_POST['submit_user_profile'])) {
-        $user_id = get_current_user_id();
-        $user_email = sanitize_email($_POST['user_email']);
-        $user_pass = $_POST['user_pass'];
-        $user_pass_confirm = $_POST['user_pass_confirm'];
-
-        // Validate and update user email
-        if (!empty($user_email) && is_email($user_email)) {
-            wp_update_user(array('ID' => $user_id, 'user_email' => $user_email));
-            $current_user = get_userdata($user_id); // Refresh current user data
-            echo '<div style="color: green;">Email updated successfully.</div>';
-        }
-
-        // Validate and update user password
-        if (!empty($user_pass) && !empty($user_pass_confirm) && $user_pass === $user_pass_confirm) {
-            wp_set_password($user_pass, $user_id);
-            echo '<div style="color: green;">Password updated successfully.</div>';
-        } elseif (!empty($user_pass) || !empty($user_pass_confirm)) {
-            echo '<div style="color: red;">Passwords do not match.</div>';
-        }
-    }
-
-    ?>
-    <form method="post" action="">
-        <label for="user_login">Username:</label><br>
-        <input type="text" id="user_login" name="user_login" value="<?php echo esc_attr($current_user->user_login); ?>" readonly /><br>
-
-        <label for="user_email">Email:</label><br>
-        <input type="email" id="user_email" name="user_email" value="<?php echo esc_attr($current_user->user_email); ?>" size="40" /><br>
-
-        <label for="user_pass">New Password:</label><br>
-        <input type="password" id="user_pass" name="user_pass" /><br>
-
-        <label for="user_pass_confirm">Confirm Password:</label><br>
-        <input type="password" id="user_pass_confirm" name="user_pass_confirm" /><br>
-
-        <?php wp_nonce_field('deia_save_user_profile', 'user_profile_nonce'); ?>
-
-        <?php submit_button('Save Changes', 'primary', 'submit_user_profile'); ?>
-    </form>
-    <?php
-}
-*/
