@@ -47,10 +47,26 @@ function deia_musician_callback($post) {
 
         if ($key == 'musician_bio') {
             echo '<textarea id="' . $key . '" name="' . $key . '" rows="15" cols="50">' . esc_textarea($value) . '</textarea>';
+        // } elseif ($key == 'musician_image') {
+        //     echo '<input type="hidden" name="musician_image" id="musician_image" value="' . esc_attr($musician_image) . '">';
+        //     echo '<img src="' . esc_url($musician_image_url) . '" id="image-preview" style="max-width: 150px; height: auto; margin-bottom: 5px;">';
+        //     echo '<input type="button" id="upload_musician_image_button" class="button" value="Upload Image" style="width:fit-content;">';
+        // } else {
         } elseif ($key == 'musician_image') {
-            echo '<input type="hidden" name="musician_image" id="musician_image" value="' . esc_attr($musician_image) . '">';
-            echo '<img src="' . esc_url($musician_image_url) . '" id="image-preview" style="max-width: 150px; height: auto; margin-bottom: 5px;">';
-            echo '<input type="button" id="upload_musician_image_button" class="button" value="Upload Image" style="width:fit-content;">';
+            echo '<input type="hidden" name="musician_image" id="musician_image" value="' . esc_attr($value) . '">';
+
+            // Display the current image previews if already uploaded
+            if (!empty($value)) {
+                $image_ids = explode(',', $value);
+                echo '<div id="image-preview">';
+                foreach ($image_ids as $image_id) {
+                    $image_url = wp_get_attachment_image_url($image_id, 'thumbnail');
+                    echo '<img src="' . esc_url($image_url) . '" style="max-width: 150px; height: auto; margin-right: 10px;">';
+                }
+                echo '</div>';
+            }
+
+            echo '<input type="button" id="upload_musician_image_button" class="button" value="Upload Images" style="width: fit-content;">';
         } else {
             echo '<input type="text" id="' . $key . '" name="' . $key . '" value="' . esc_attr($value) . '" size="25" />';
         }
