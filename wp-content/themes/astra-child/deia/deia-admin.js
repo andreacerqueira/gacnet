@@ -97,6 +97,9 @@ jQuery(document).ready(function ($) {
       musician_tiktok: {
         url: true,
       },
+      musician_player: {
+        validPlayerEmbed: true,
+      },
     },
     messages: {
       musician_email: {
@@ -129,6 +132,9 @@ jQuery(document).ready(function ($) {
       },
       musician_tiktok: {
         url: "Please enter a valid URL.",
+      },
+      musician_player: {
+        validPlayerEmbed: "Please enter a valid player embed code.",
       },
     },
     submitHandler: function (form) {

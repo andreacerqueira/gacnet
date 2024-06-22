@@ -230,6 +230,7 @@ function deia_save_musician_details($post_id) {
         'musician_instagram',
         'musician_tiktok',
         'musician_bio',
+        'musician_player',
         'musician_header_image',
         'musician_image',
     );
@@ -263,6 +264,25 @@ function deia_save_musician_details($post_id) {
                 case 'musician_bio':
                     $musician_bio = wp_kses_post($_POST[$field]); // Allow basic HTML tags
                     update_post_meta($post_id, $field, $musician_bio);
+                    break;
+                case 'musician_player':
+                    // Allow specific tags and attributes needed for embedding players
+                    $allowed_html = array(
+                        'iframe' => array(
+                            'src' => true,
+                            'width' => true,
+                            'height' => true,
+                            'frameborder' => true,
+                            'allowfullscreen' => true,
+                        ),
+                        'div' => array(
+                            'class' => true,
+                            'id' => true,
+                            'style' => true,
+                        ),
+                    );
+                    $musician_player = wp_kses($_POST[$field], $allowed_html);
+                    update_post_meta($post_id, $field, $musician_player);
                     break;
                 case 'musician_header_image':
                     $image_header_id = intval($_POST[$field]); // Ensure it's a valid URL

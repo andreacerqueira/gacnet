@@ -35,6 +35,7 @@ function deia_musician_callback($post) {
         'musician_instagram' => 'Instagram',
         'musician_tiktok' => 'TikTok',
         'musician_bio' => 'Biography',
+        'musician_player' => 'External Player',
         'musician_header_image' => 'Upload Header Image',
         'musician_image' => 'Upload Image',
     );
@@ -52,6 +53,8 @@ function deia_musician_callback($post) {
 
         if ($key == 'musician_bio') {
             echo '<textarea id="' . $key . '" name="' . $key . '" rows="15" cols="50">' . esc_textarea($value) . '</textarea>';
+        } elseif ($key == 'musician_player') {
+            echo '<textarea id="' . $key . '" name="' . $key . '" rows="5" cols="50">' . esc_textarea($value) . '</textarea>';
         } elseif ($key == 'musician_header_image') {
             echo '<input type="hidden" name="musician_header_image" id="musician_header_image" value="' . esc_attr($musician_header_image) . '">';
             echo '<img src="' . esc_url($musician_header_image_url) . '" id="image-preview-header" style="max-width: 500px; height: auto; margin-bottom: 5px;">';

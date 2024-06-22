@@ -460,6 +460,19 @@ article.deia-cat-list .right-content .share-icons a img {
   article.deia-cat-list .entry-thumbnail a img {
     width: fit-content;
   }
+
+  .musician-details {
+    flex-direction: column;
+    gap: 2rem;
+  }
+
+  .musician-details .left {
+    flex: unset;
+  }
+
+  .musician-details .left ul.details {
+    margin: 1rem 0;
+  }
 }
 
 /* Styles for small devices (tablets) */

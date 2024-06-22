@@ -34,8 +34,7 @@ get_header(); ?>
             $instagram = get_post_meta(get_the_ID(), 'musician_instagram', true);
             $tiktok = get_post_meta(get_the_ID(), 'musician_tiktok', true);
             $bio = get_post_meta(get_the_ID(), 'musician_bio', true);
-            // $image_header = get_post_meta(get_the_ID(), 'musician_header_image', true);
-            // $musician_image_header_url = $image ? wp_get_attachment_image_url($image_header, 'full') : '';
+            $player = get_post_meta(get_the_ID(), 'musician_player', true);
             $image = get_post_meta(get_the_ID(), 'musician_image', true);
             $musician_image_url = $image ? wp_get_attachment_image_url($image, 'full') : '';
 
@@ -84,6 +83,25 @@ get_header(); ?>
                     <?php the_title('<h1 class="page-title line">', '</h1>'); ?>
                     <?php if ( $bio ) : ?>
                         <p><?php echo wpautop( $bio ); ?></p>
+                    <?php endif; ?>
+                    <?php
+                        if ( $player ) :
+                            $allowed_html = array(
+                                'iframe' => array(
+                                    'src' => true,
+                                    'width' => true,
+                                    'height' => true,
+                                    'frameborder' => true,
+                                    'allowfullscreen' => true,
+                                ),
+                                'div' => array(
+                                    'class' => true,
+                                    'id' => true,
+                                    'style' => true,
+                                ),
+                            );
+                        ?>
+                        <div class="deia-player"><?php echo wp_kses($player, $allowed_html); ?></div>
                     <?php endif; ?>
                     <!-- space for players -->
                 </div>
