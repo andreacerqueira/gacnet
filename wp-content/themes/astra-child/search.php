@@ -23,6 +23,9 @@ get_header(); ?>
         <form role="search" method="get" id="searchform" class="searchform" action="<?php echo esc_url(home_url('/')); ?>">
             <label class="screen-reader-text" for="s"><?php _e('Search for:'); ?></label>
             <input type="text" value="<?php echo get_search_query(); ?>" name="s" id="s" placeholder="Search..."/>
+            <?php if (isset($_GET['cat'])) : ?>
+                <input type="hidden" name="cat" value="<?php echo esc_attr($_GET['cat']); ?>"/>
+            <?php endif; ?>
             <input type="submit" id="searchsubmit" value="<?php echo esc_attr__('Search'); ?>"/>
         </form>
     </div>

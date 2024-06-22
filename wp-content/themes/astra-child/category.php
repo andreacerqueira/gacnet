@@ -17,6 +17,7 @@ get_header(); ?>
             <form role="search" method="get" id="searchform" class="searchform" action="<?php echo esc_url(home_url('/')); ?>">
                 <label class="screen-reader-text" for="s"><?php _e('Search for:'); ?></label>
                 <input type="text" value="<?php echo get_search_query(); ?>" name="s" id="s" placeholder="Search..."/>
+                <input type="hidden" name="cat" value="<?php echo get_queried_object_id(); ?>"/>
                 <input type="submit" id="searchsubmit" value="<?php echo esc_attr__('Search'); ?>"/>
             </form>
         </div>
@@ -53,8 +54,6 @@ get_header(); ?>
                         <a href="https://wa.me/?text=<?php urlencode('Check out this video: https://www.youtube.com/watch?v=' . $videoId); ?>" target="_blank"><img src="<?php echo get_template_directory_uri(); ?>-child/assets/images/icon-whatsapp.svg"/></a>
                         <!-- <a href="instagram' . urlencode('https://www.youtube.com/watch?v=' . $videoId) . '" target="_blank"><img src="<?php //echo get_template_directory_uri(); ?>-child/assets/images/icon-instagram.svg"/></a> -->
                     </div><!-- .share-icons -->
-
-                    <?php astra_edit_post_link( 'Edit this post' ); ?>
 
                 </div><!-- .right-content -->
 
