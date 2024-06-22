@@ -43,7 +43,7 @@ function deia_metaboxes() {
         remove_meta_box('edit-slug-box', 'post', 'normal'); // Slug meta box
         remove_meta_box('authordiv', 'post', 'normal'); // Author meta box
         remove_meta_box('revisionsdiv', 'post', 'normal'); // Revisions meta box
-        remove_meta_box('postexcerpt', 'post', 'normal'); // Excerpt meta box
+        // remove_meta_box('postexcerpt', 'post', 'normal'); // Excerpt meta box
         remove_meta_box('trackbacksdiv', 'post', 'normal'); // Trackbacks meta box
 
         // remove_meta_box('wpfooter', 'post', 'normal'); // WP footer meta box

@@ -44,7 +44,7 @@ if ( apply_filters( 'astra_header_profile_gmpg_link', true ) ) {
 		<?php echo esc_html( astra_default_strings( 'string-header-skip-link', false ) ); ?>
 </a>
 
-<?php if ( in_category('musicians') ) : ?>
+<?php if ( is_singular('post') && in_category('musicians') ) : ?>
     <?php
     $image_header = get_post_meta(get_the_ID(), 'musician_header_image', true);
     $musician_image_header_url = $image_header ? wp_get_attachment_image_url($image_header, 'full') : '';

@@ -21,8 +21,6 @@ get_header(); ?>
     if ( have_posts() ) :
         while ( have_posts() ) :
             the_post();
-
-            the_title('<h1>', '</h1>');
             
             // Custom fields for musicians
             $email = get_post_meta(get_the_ID(), 'musician_email', true);
@@ -35,8 +33,8 @@ get_header(); ?>
             $facebook = get_post_meta(get_the_ID(), 'musician_facebook', true);
             $tiktok = get_post_meta(get_the_ID(), 'musician_tiktok', true);
             $bio = get_post_meta(get_the_ID(), 'musician_bio', true);
-            $image_header = get_post_meta(get_the_ID(), 'musician_header_image', true);
-            $musician_image_header_url = $image ? wp_get_attachment_image_url($image_header, 'full') : '';
+            // $image_header = get_post_meta(get_the_ID(), 'musician_header_image', true);
+            // $musician_image_header_url = $image ? wp_get_attachment_image_url($image_header, 'full') : '';
             $image = get_post_meta(get_the_ID(), 'musician_image', true);
             $musician_image_url = $image ? wp_get_attachment_image_url($image, 'full') : '';
 
@@ -44,40 +42,47 @@ get_header(); ?>
             // the_content();
         ?>
             <div class="musician-details">
-                <?php if ( $email ) : ?>
-                    <p><a href="mailto:<?php echo esc_html( $email ); ?>">Email</a></p>
-                <?php endif; ?>
-                <?php if ( $website ) : ?>
-                    <p><a href="<?php echo esc_url( $website ); ?>" target="_blank">Website</a></p>
-                <?php endif; ?>
-                <?php if ( $spotify ) : ?>
-                    <p><a href="<?php echo esc_url( $spotify ); ?>" target="_blank">Spotify</a></p>
-                <?php endif; ?>
-                <?php if ( $apple_music ) : ?>
-                    <p><a href="<?php echo esc_url( $apple_music ); ?>" target="_blank">Apple Music</a></p>
-                <?php endif; ?>
-                <?php if ( $youtube_music ) : ?>
-                    <p><a href="<?php echo esc_url( $youtube_music ); ?>" target="_blank">Youtube Music</a></p>
-                <?php endif; ?>
-                <?php if ( $youtube ) : ?>
-                    <p><a href="<?php echo esc_url( $youtube ); ?>" target="_blank">YouTube</a></p>
-                <?php endif; ?>
-                <?php if ( $twitter ) : ?>
-                    <p><a href="<?php echo esc_url( $twitter ); ?>" target="_blank">Twitter</a></p>
-                <?php endif; ?>
-                <?php if ( $facebook ) : ?>
-                    <p><a href="<?php echo esc_url( $facebook ); ?>" target="_blank">Facebook</a></p>
-                <?php endif; ?>
-                <?php if ( $tiktok ) : ?>
-                    <p><a href="<?php echo esc_url( $tiktok ); ?>" target="_blank">Tiktok</a></p>
-                <?php endif; ?>
-                <?php if ( $bio ) : ?>
-                    <p><?php echo esc_html( $bio ); ?></p>
-                <?php endif; ?>
-                <?php if ( $image ) : ?>
-                    <div><img src="<?php echo esc_url( $musician_image_url ); ?>"/></div>
-                <?php endif; ?>
-
+                <div class="left">
+                    <?php if ( $image ) : ?>
+                        <div class="image"><img src="<?php echo esc_url( $musician_image_url ); ?>"/></div>
+                    <?php endif; ?>
+                    <ul class="details">
+                        <?php if ( $website ) : ?>
+                            <li><a href="<?php echo esc_url( $website ); ?>" target="_blank"><img src="<?php echo get_template_directory_uri(); ?>-child/assets/images/icon-website.svg"/></a></li>
+                        <?php endif; ?>
+                        <?php if ( $spotify ) : ?>
+                            <li><a href="<?php echo esc_url( $spotify ); ?>" target="_blank"><img src="<?php echo get_template_directory_uri(); ?>-child/assets/images/icon-spotify.svg"/></a></li>
+                        <?php endif; ?>
+                        <?php if ( $apple_music ) : ?>
+                            <li><a href="<?php echo esc_url( $apple_music ); ?>" target="_blank"><img src="<?php echo get_template_directory_uri(); ?>-child/assets/images/icon-apple-music.svg"/></a></li>
+                        <?php endif; ?>
+                        <?php if ( $youtube_music ) : ?>
+                            <li><a href="<?php echo esc_url( $youtube_music ); ?>" target="_blank"><img src="<?php echo get_template_directory_uri(); ?>-child/assets/images/icon-youtube-music.svg"/></a></li>
+                        <?php endif; ?>
+                        <?php if ( $youtube ) : ?>
+                            <li><a href="<?php echo esc_url( $youtube ); ?>" target="_blank"><img src="<?php echo get_template_directory_uri(); ?>-child/assets/images/icon-youtube.svg"/></a></li>
+                        <?php endif; ?>
+                        <?php if ( $twitter ) : ?>
+                            <li><a href="<?php echo esc_url( $twitter ); ?>" target="_blank"><img src="<?php echo get_template_directory_uri(); ?>-child/assets/images/icon-twitter.svg"/></a></li>
+                        <?php endif; ?>
+                        <?php if ( $facebook ) : ?>
+                            <li><a href="<?php echo esc_url( $facebook ); ?>" target="_blank"><img src="<?php echo get_template_directory_uri(); ?>-child/assets/images/icon-facebook.svg"/></a></li>
+                        <?php endif; ?>
+                        <?php if ( $tiktok ) : ?>
+                            <li><a href="<?php echo esc_url( $tiktok ); ?>" target="_blank"><img src="<?php echo get_template_directory_uri(); ?>-child/assets/images/icon-tiktok.svg"/></a></li>
+                        <?php endif; ?>
+                        <?php if ( $email ) : ?>
+                            <li><a href="mailto:<?php echo esc_html( $email ); ?>"><img src="<?php echo get_template_directory_uri(); ?>-child/assets/images/icon-email.svg"/></a></li>
+                        <?php endif; ?>
+                    </ul>
+                </div>
+                <div class="right">
+                    <?php the_title('<h1 class="page-title line">', '</h1>'); ?>
+                    <?php if ( $bio ) : ?>
+                        <p><?php echo esc_html( $bio ); ?></p>
+                    <?php endif; ?>
+                    <!-- space for players -->
+                </div>
             </div>
         <?php
         endwhile;
@@ -89,23 +94,3 @@ get_header(); ?>
 </div><!-- #primary -->
 
 <?php get_footer(); ?>
-
-<!-- .musician-details {
-    margin-top: 20px;
-}
-
-.musician-details p {
-    font-size: 16px;
-    margin-bottom: 10px;
-}
-
-.musician-details ul {
-    list-style-type: none;
-    padding: 0;
-}
-
-.musician-details ul li {
-    background: #f4f4f4;
-    margin-bottom: 5px;
-    padding: 10px;
-} -->

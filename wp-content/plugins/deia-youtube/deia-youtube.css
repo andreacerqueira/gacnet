@@ -31,11 +31,13 @@
   display: block;
   background-size: cover;
   background-position: center;
-  border: 1px solid #ccc;
+  border: none;
   width: 6rem;
   height: 6rem;
   min-width: 6rem;
   min-height: 6rem;
+  border-radius: 5px;
+  box-shadow: 4px 4px 8px rgba(0, 0, 0, 0.5);
 }
 
 .deia-videos li a {

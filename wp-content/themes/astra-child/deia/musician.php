@@ -83,6 +83,13 @@ function deia_enqueue_custom_admin_scripts() {
 add_action('admin_enqueue_scripts', 'deia_enqueue_custom_admin_scripts');
 
 
+// Add support for a custom image size
+function deia_custom_image_sizes() {
+    add_image_size( 'deia-600-img', 600, 600, false ); // 500 pixels wide by 500 pixels tall, false for hard crop mode
+}
+add_action( 'after_setup_theme', 'deia_custom_image_sizes' );
+
+
 // Disable autosave, revisions, and autosave notice for musicians
 function deia_customize_admin_for_musicians() {
     if (current_user_can('musician')) {

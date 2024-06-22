@@ -360,6 +360,54 @@ article.deia-cat-list .right-content .share-icons a img {
 }
 /* Deia List of Categories ------------------------------- */
 
+/* Deia Musicians Single Page ------------------------------- */
+.musician-details {
+  display: flex;
+  flex-direction: row;
+  gap: 5rem;
+  padding: 1rem 0;
+}
+
+.musician-details .left {
+  flex: 0 0 27rem;
+}
+
+.musician-details .left .image {
+  width: 100%;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 4px 4px 8px rgba(0, 0, 0, 0.5);
+}
+
+.musician-details .left ul.details {
+  display: flex;
+  flex-direction: row;
+  gap: 1rem;
+  list-style-type: none;
+  padding: 0;
+  margin: 1rem auto;
+  width: fit-content;
+}
+
+.musician-details .left ul.details li {
+  display: flex;
+  flex-direction: row;
+  gap: 1rem;
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+}
+
+.musician-details .left ul.details li img {
+  width: 2rem;
+  height: 2rem;
+}
+
+.musician-details .right {
+  flex: 1 1 auto;
+}
+/* Deia Musicians Single Page ------------------------------- */
+
 /* Styles for extra small devices (phones) */
 @media (max-width: 576px) {
   .ast-separate-container .ast-article-post,
