@@ -21,9 +21,19 @@ get_header(); ?>
         <h1 class="page-title line"><?php single_cat_title(); ?></h1>
 
 		<?php
-		while ( have_posts() ) :
-			the_post();
-			?>
+		$paged = ( get_query_var('paged') ) ? get_query_var('paged') : 1;
+
+		$args = array(
+			'category_name' => 'musicians',
+			'posts_per_page' => 10,
+			'paged' => $paged
+		);
+
+		$musicians_query = new WP_Query($args);
+
+		if ($musicians_query->have_posts()) :
+			while ($musicians_query->have_posts()) : $musicians_query->the_post();
+		    ?>
 
 			<article id="post-<?php the_ID(); ?>" class="deia-cat-list">
                 
@@ -55,7 +65,28 @@ get_header(); ?>
 			</article><!-- #post-## -->
 
 			<?php
-		endwhile;
+			endwhile;
+		?>
+
+			<!-- Pagination -->
+			<div class="pagination">
+				<?php
+				echo paginate_links(array(
+					'total' => $musicians_query->max_num_pages,
+					'current' => $paged,
+					'prev_text' => __('← Previous Page'),
+					'next_text' => __('Next Page →'),
+				));
+				?>
+			</div>
+
+		<?php
+			else :
+				echo '<p>No posts found.</p>';
+			endif;
+			
+			// Reset post data
+			wp_reset_postdata();
 		?>
 
 	</div><!-- #primary -->

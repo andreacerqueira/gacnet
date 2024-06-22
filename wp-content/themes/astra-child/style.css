@@ -20,6 +20,7 @@ Template: astra
   --ast-global-color-6: #e2e8f0;
   --ast-global-color-7: #cbd5e1;
   --ast-global-color-8: #94a3b8;
+  --ast-global-color-9: #2a2a2a;
 
   --ast-container-default-xlg-padding: 6.67em;
   --ast-container-default-lg-padding: 5.67em;
@@ -142,7 +143,7 @@ textarea:focus {
 
 .site-header.ast-header-slide.ast-sticky-active.ast-header-sticked {
   background-color: #000000;
-  border-bottom: solid 1px #2a2a2a;
+  border-bottom: solid 1px var(--ast-global-color-9);
 }
 
 .ast-primary-header-bar,
