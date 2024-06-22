@@ -75,10 +75,10 @@ function deia_enqueue_custom_admin_scripts() {
         //     'ajaxUrl' => admin_url('admin-ajax.php'),
         //     // Add more parameters as needed
         // ));
-
-        // Enqueue custom admin styles
-        wp_enqueue_style('deia-custom-admin-styles', get_stylesheet_directory_uri() . '/deia/deia-admin.css');
     }
+
+    // Enqueue custom admin styles for ALL type of users
+    wp_enqueue_style('deia-custom-admin-styles', get_stylesheet_directory_uri() . '/deia/deia-admin.css');
 }
 add_action('admin_enqueue_scripts', 'deia_enqueue_custom_admin_scripts');
 

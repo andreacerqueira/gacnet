@@ -17,16 +17,16 @@ body.role-musician #postexcerpt .inside > p {
 }
 
 /* Default Profile PAge */
-form#your-profile h2,
-.form-table .user-rich-editing-wrap,
-.form-table .user-syntax-highlighting-wrap,
-.form-table .user-admin-color-wrap,
-.form-table .user-comment-shortcuts-wrap,
-.form-table .show-admin-bar,
-.form-table .user-language-wrap,
-.form-table .user-description-wrap,
-.form-table .user-profile-picture,
-#application-passwords-section {
+body.role-musician form#your-profile h2,
+body.role-musician .form-table .user-rich-editing-wrap,
+body.role-musician .form-table .user-syntax-highlighting-wrap,
+body.role-musician .form-table .user-admin-color-wrap,
+body.role-musician .form-table .user-comment-shortcuts-wrap,
+body.role-musician .form-table .show-admin-bar,
+body.role-musician .form-table .user-language-wrap,
+body.role-musician .form-table .user-description-wrap,
+body.role-musician .form-table .user-profile-picture,
+body.role-musician #application-passwords-section {
   display: none !important;
 }
 
