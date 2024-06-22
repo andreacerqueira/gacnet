@@ -26,8 +26,7 @@ get_header(); ?>
 			?>
 
 			<article id="post-<?php the_ID(); ?>" class="deia-cat-list">
-
-                
+            
                 <?php if ( has_post_thumbnail() ) : ?>
                     <div class="entry-thumbnail">
                     <a href="<?php the_permalink(); ?>" title="<?php the_title_attribute(); ?>">

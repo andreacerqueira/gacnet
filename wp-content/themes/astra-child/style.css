@@ -76,7 +76,7 @@ textarea {
   border-width: 1px;
   border-style: solid;
   border-color: #202427;
-  border-radius: 6px;
+  border-radius: 16px;
   background: #222528;
   box-shadow: none;
   box-sizing: border-box;
@@ -408,6 +408,39 @@ article.deia-cat-list .right-content .share-icons a img {
   flex: 1 1 auto;
 }
 /* Deia Musicians Single Page ------------------------------- */
+
+/* Deia Musicians Catefgory Page ---------------------------- */
+.heading-search {
+  display: flex;
+  flex-direction: row;
+  gap: 2rem;
+  align-items: baseline;
+}
+
+.heading-search .searchform {
+  margin-left: auto;
+  display: flex;
+  gap: 0.8rem;
+}
+
+.heading-search h1 .term {
+  position: relative;
+  font-weight: normal;
+  font-style: italic;
+  padding-left: 0.5rem;
+}
+
+.heading-search h1 .term::after {
+  display: inline-block;
+  position: absolute;
+  bottom: -10px;
+  left: 0;
+  content: "";
+  width: 100%;
+  height: 10px;
+  background-color: #000000;
+}
+/* Deia Musicians Catefgory Page ---------------------------- */
 
 /* Styles for extra small devices (phones) */
 @media (max-width: 576px) {
