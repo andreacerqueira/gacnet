@@ -32,6 +32,7 @@ function deia_musician_callback($post) {
         'musician_youtube' => 'YouTube',
         'musician_twitter' => 'Twitter',
         'musician_facebook' => 'Facebook',
+        'musician_instagram' => 'Instagram',
         'musician_tiktok' => 'TikTok',
         'musician_bio' => 'Biography',
         'musician_header_image' => 'Upload Header Image',

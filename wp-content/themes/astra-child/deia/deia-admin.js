@@ -91,6 +91,9 @@ jQuery(document).ready(function ($) {
       musician_facebook: {
         url: true,
       },
+      musician_instagram: {
+        url: true,
+      },
       musician_tiktok: {
         url: true,
       },
@@ -119,6 +122,9 @@ jQuery(document).ready(function ($) {
         url: "Please enter a valid URL.",
       },
       musician_facebook: {
+        url: "Please enter a valid URL.",
+      },
+      musician_instagram: {
         url: "Please enter a valid URL.",
       },
       musician_tiktok: {

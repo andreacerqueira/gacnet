@@ -227,6 +227,7 @@ function deia_save_musician_details($post_id) {
         'musician_youtube',
         'musician_twitter',
         'musician_facebook',
+        'musician_instagram',
         'musician_tiktok',
         'musician_bio',
         'musician_header_image',
@@ -251,6 +252,7 @@ function deia_save_musician_details($post_id) {
                 case 'musician_youtube':
                 case 'musician_twitter':
                 case 'musician_facebook':
+                case 'musician_instagram':
                 case 'musician_tiktok':
                     $url = esc_url_raw($_POST[$field]);
                     if (!empty($url) && !filter_var($url, FILTER_VALIDATE_URL)) {

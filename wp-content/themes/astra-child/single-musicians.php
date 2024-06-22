@@ -31,6 +31,7 @@ get_header(); ?>
             $youtube = get_post_meta(get_the_ID(), 'musician_youtube', true);
             $twitter = get_post_meta(get_the_ID(), 'musician_twitter', true);
             $facebook = get_post_meta(get_the_ID(), 'musician_facebook', true);
+            $instagram = get_post_meta(get_the_ID(), 'musician_instagram', true);
             $tiktok = get_post_meta(get_the_ID(), 'musician_tiktok', true);
             $bio = get_post_meta(get_the_ID(), 'musician_bio', true);
             // $image_header = get_post_meta(get_the_ID(), 'musician_header_image', true);
@@ -68,6 +69,9 @@ get_header(); ?>
                         <?php if ( $facebook ) : ?>
                             <li><a href="<?php echo esc_url( $facebook ); ?>" target="_blank"><img src="<?php echo get_template_directory_uri(); ?>-child/assets/images/icon-facebook.svg"/></a></li>
                         <?php endif; ?>
+                        <?php if ( $instagram ) : ?>
+                            <li><a href="<?php echo esc_url( $instagram ); ?>" target="_blank"><img src="<?php echo get_template_directory_uri(); ?>-child/assets/images/icon-instagram.svg"/></a></li>
+                        <?php endif; ?>
                         <?php if ( $tiktok ) : ?>
                             <li><a href="<?php echo esc_url( $tiktok ); ?>" target="_blank"><img src="<?php echo get_template_directory_uri(); ?>-child/assets/images/icon-tiktok.svg"/></a></li>
                         <?php endif; ?>
@@ -79,7 +83,7 @@ get_header(); ?>
                 <div class="right">
                     <?php the_title('<h1 class="page-title line">', '</h1>'); ?>
                     <?php if ( $bio ) : ?>
-                        <p><?php echo esc_html( $bio ); ?></p>
+                        <p><?php echo wpautop( $bio ); ?></p>
                     <?php endif; ?>
                     <!-- space for players -->
                 </div>
