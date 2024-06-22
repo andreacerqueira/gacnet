@@ -54,7 +54,13 @@ get_header(); ?>
 
                     <a href="<?php the_permalink(); ?>" class="entry-content clear" <?php echo astra_attr( 'entry-content' ); ?>>
 
-                        <?php the_excerpt(); ?>
+                        <?php
+                        if ( has_excerpt() ) {
+                            the_excerpt();
+                        } else {
+                            echo '<p>' . esc_html( get_limited_musician_bio(get_the_ID()) ) . '</p>';
+                        }
+                        ?>
 
                     </a><!-- .entry-content -->
 

@@ -28,6 +28,14 @@ add_action('admin_bar_menu', 'deia_customize_admin_bar', 999);
 
 // Function to remove unnecessary meta boxes for musicians
 function deia_metaboxes() {
+    // Musician
+    // Subscriber
+    // Contributor
+    // Author
+    // Editor
+    // Administrator
+
+    // Musician type of user
     if (current_user_can('musician')) {
         remove_meta_box('categorydiv', 'post', 'side'); // Categories meta box
         remove_meta_box('commentstatusdiv', 'post', 'normal'); // Discussion meta box
@@ -51,6 +59,14 @@ function deia_metaboxes() {
         // remove_meta_box('screen-meta-links', 'post', 'normal');
     }
 
+    // Editor type of user
+    if (current_user_can('editor')) {
+        remove_meta_box('formatdiv', 'post', 'side'); // Format meta box
+        remove_meta_box('astra_settings_meta_box', 'post', 'side'); // Astra Settings meta box
+        // remove_meta_box('postimagediv', 'post', 'side'); // Remove the featured image box
+        remove_meta_box('postcustom', 'post', 'normal'); // Custom fields meta box
+    }
+
     // Register the musician_details meta box
     add_meta_box(
         'musician_details',
@@ -64,14 +80,24 @@ function deia_metaboxes() {
 add_action('add_meta_boxes', 'deia_metaboxes', 99); // High Priority
 
 
-// Disable block editor for musicians
-function deia_disable_block_editor_for_musician($use_block_editor, $post_type) {
-    if (current_user_can('musician')) {
-        return false; // Disable block editor for musicians
+// // Disable block editor for musicians
+// function deia_disable_block_editor_for_musician($use_block_editor, $post_type) {
+//     if (current_user_can('musician')) {
+//         return false; // Disable block editor for musicians
+//     }
+//     return $use_block_editor; // Use default behavior for other users or post types
+// }
+// add_filter('use_block_editor_for_post', 'deia_disable_block_editor_for_musician', 10, 2);
+
+
+// Disable block editor for all post types except pages
+function deia_disable_block_editor_post($use_block_editor, $post) {
+    if ($post->post_type !== 'page') {
+        return false; // Disable block editor for all post types except pages
     }
-    return $use_block_editor; // Use default behavior for other users or post types
+    return $use_block_editor; // Use default behavior for pages
 }
-add_filter('use_block_editor_for_post', 'deia_disable_block_editor_for_musician', 10, 2);
+add_filter('use_block_editor_for_post', 'deia_disable_block_editor_post', 10, 2);
 
 
 // Remove post editor for musicians

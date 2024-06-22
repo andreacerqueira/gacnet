@@ -301,3 +301,16 @@ function deia_save_musician_details($post_id) {
     }
 }
 add_action('save_post', 'deia_save_musician_details');
+
+
+// Retrieves the musician_bio custom field, removes HTML tags, and limits its length to the specified number of characters
+function get_limited_musician_bio($post_id, $limit = 400) {
+    $musician_bio = get_post_meta($post_id, 'musician_bio', true);
+    if (!empty($musician_bio)) {
+        $musician_bio = wp_strip_all_tags($musician_bio); // Remove HTML tags
+        if (strlen($musician_bio) > $limit) {
+            $musician_bio = substr($musician_bio, 0, $limit) . '...';
+        }
+    }
+    return $musician_bio;
+}
