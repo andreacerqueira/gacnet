@@ -8,17 +8,18 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 get_header(); ?>
 
-<?php if ( astra_page_layout() == 'left-sidebar' ) : ?>
-
-	<?php get_sidebar(); ?>
-
-<?php endif ?>
-
 	<div id="primary" <?php astra_primary_class(); ?>>
 
-		<?php astra_primary_content_top(); ?>
+        <div class="heading-search">
+            <h1 class="page-title line"><?php single_cat_title(); ?></h1>
 
-        <h1 class="page-title line"><?php single_cat_title(); ?></h1>
+            <!-- Search Form -->
+            <form role="search" method="get" id="searchform" class="searchform" action="<?php echo esc_url(home_url('/')); ?>">
+                <label class="screen-reader-text" for="s"><?php _e('Search for:'); ?></label>
+                <input type="text" value="<?php echo get_search_query(); ?>" name="s" id="s" placeholder="Search..."/>
+                <input type="submit" id="searchsubmit" value="<?php echo esc_attr__('Search'); ?>"/>
+            </form>
+        </div>
 
 		<?php
 		while ( have_posts() ) :
@@ -64,11 +65,5 @@ get_header(); ?>
 		?>
 
 	</div><!-- #primary -->
-
-<?php if ( astra_page_layout() == 'right-sidebar' ) : ?>
-
-	<?php get_sidebar(); ?>
-
-<?php endif ?>
 
 <?php get_footer(); ?>
