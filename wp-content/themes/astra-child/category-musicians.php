@@ -33,7 +33,9 @@ get_header(); ?>
 		's' => $search_query,
 	);
 
+    add_filter('posts_search', 'deia_search_by_title_only', 10, 2);
 	$musicians_query = new WP_Query($args);
+	remove_filter('posts_search', 'deia_search_by_title_only', 10, 2);
 
 	if ($musicians_query->have_posts()) :
 		while ($musicians_query->have_posts()) : $musicians_query->the_post();
@@ -67,8 +69,6 @@ get_header(); ?>
 					?>
 
 				</a><!-- .entry-content -->
-
-				<?php astra_edit_post_link( 'Edit this post' ); ?>
 
 			</div><!-- .right-content -->
 

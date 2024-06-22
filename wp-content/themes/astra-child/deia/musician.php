@@ -303,6 +303,25 @@ function deia_save_musician_details($post_id) {
 add_action('save_post', 'deia_save_musician_details');
 
 
+// Add a filter to modify the search query and only search for title
+function deia_search_by_title_only($search, $wp_query) {
+    global $wpdb;
+    if (!empty($search) && !is_admin()) {
+        $search = '';
+        $search_terms = $wp_query->query_vars['s'];
+        if (!empty($search_terms)) {
+            $search_terms = is_array($search_terms) ? $search_terms : array($search_terms);
+            foreach ($search_terms as $search_term) {
+                $search_term = esc_sql($wpdb->esc_like($search_term));
+                $search .= " AND ({$wpdb->posts}.post_title LIKE '%{$search_term}%')";
+            }
+        }
+    }
+    return $search;
+}
+add_filter('posts_search', 'deia_search_by_title_only', 10, 2);
+
+
 // Retrieves the musician_bio custom field, removes HTML tags, and limits its length to the specified number of characters
 function get_limited_musician_bio($post_id, $limit = 400) {
     $musician_bio = get_post_meta($post_id, 'musician_bio', true);

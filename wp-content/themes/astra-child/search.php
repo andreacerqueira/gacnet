@@ -28,9 +28,13 @@ get_header(); ?>
         </form>
     </div>
 
-	<?php if ( have_posts() ) : ?>
+	<?php
+	if ( have_posts() ) :
 
-		<?php while ( have_posts() ) : the_post(); ?>
+		add_filter('posts_search', 'deia_search_by_title_only', 10, 2);
+		while ( have_posts() ) : the_post();
+			remove_filter('posts_search', 'deia_search_by_title_only', 10, 2);
+	    ?>
 
 			<article id="post-<?php the_ID(); ?>" class="deia-cat-list">
 
@@ -49,11 +53,17 @@ get_header(); ?>
 
 					<h2><a href="<?php the_permalink(); ?>"><?php the_title(); ?></a></h2>
 
-					<div class="entry-content clear" <?php echo astra_attr( 'entry-content' ); ?>>
+					<a href="<?php the_permalink(); ?>" class="entry-content clear" <?php echo astra_attr( 'entry-content' ); ?>>
 
-						<?php the_excerpt(); ?>
+                        <?php
+                        if ( has_excerpt() ) {
+                            the_excerpt();
+                        } else {
+                            echo '<p>' . esc_html( get_limited_musician_bio(get_the_ID()) ) . '</p>';
+                        }
+                        ?>
 
-					</div><!-- .entry-content -->
+                    </a><!-- .entry-content -->
 
 				</div><!-- .right-content -->
 
