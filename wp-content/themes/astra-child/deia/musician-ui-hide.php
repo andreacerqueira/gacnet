@@ -28,6 +28,7 @@ add_action('admin_bar_menu', 'deia_customize_admin_bar', 999);
 
 // Function to remove unnecessary meta boxes for musicians
 function deia_metaboxes() {
+    // TYPE OF USERS
     // Musician
     // Subscriber
     // Contributor
