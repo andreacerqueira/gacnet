@@ -52,7 +52,7 @@ if ( apply_filters( 'astra_header_profile_gmpg_link', true ) ) {
     <?php if ( !empty($musician_image_header_url) ) : ?>
     <style>
         .musician-header {
-			position: absolute;
+			position: fixed;
 			top: 0;
 			left: 0;
             background-image: url('<?php echo esc_url($musician_image_header_url); ?>');
@@ -71,7 +71,7 @@ if ( apply_filters( 'astra_header_profile_gmpg_link', true ) ) {
             left: 0;
 			/* Adjust the 50% value to occupy more space */
             /* background: linear-gradient(to bottom, rgba(0, 0, 0, 1) 10%, rgba(0, 0, 0, 0.7) 60%); */
-			background: linear-gradient(to bottom, rgba(0, 0, 0, 0.85) 0%, rgba(0, 0, 0, 1) 90%);
+			background: linear-gradient(to bottom, rgba(0, 0, 0, 0.8) 0%, rgba(0, 0, 0, 1) 90%);
             z-index: 1;
         }
         .musician-header-content {
