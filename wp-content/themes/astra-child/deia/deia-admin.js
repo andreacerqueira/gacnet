@@ -35,6 +35,9 @@ jQuery(document).ready(function ($) {
     mediaHeaderUploader.open();
   });
 
+  // Remove the 2 columns layout ------------------------------------------------
+  $('.role-musician #post-body').removeClass('columns-2').addClass('columns-1');
+
   // Band upload image ----------------------------------------------------------
   var mediaUploader;
   $("#upload_musician_image_button").click(function (e) {
