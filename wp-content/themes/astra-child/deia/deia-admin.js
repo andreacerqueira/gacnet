@@ -67,6 +67,16 @@ jQuery(document).ready(function ($) {
   });
 
   // Validation -----------------------------------------------------------------
+
+  // Custom validation method for player embed code
+  $.validator.addMethod("validPlayerEmbed", function(value, element) {
+    console.log("Validating player embed code:", value);
+    // Simple validation to check if the value contains an iframe
+    const isValid = this.optional(element) || /<iframe.*<\/iframe>/.test(value);
+    // console.log("Validation result for player embed:", isValid);
+    return isValid;
+  }, "Please enter a valid player embed code.");
+
   $("#post").validate({
     rules: {
       musician_email: {
@@ -140,8 +150,17 @@ jQuery(document).ready(function ($) {
         validPlayerEmbed: "Please enter a valid player embed code.",
       },
     },
-    submitHandler: function (form) {
-      form.submit();
+    errorPlacement: function(error, element) {
+      console.error("Validation error:", error.text());
+      error.appendTo(element.parent());
     },
+    invalidHandler: function(event, validator) {
+      console.error("Invalid form submission:", validator);
+      event.preventDefault(); // Prevent form submission
+    },
+    submitHandler: function(form) {
+      console.log("Form is valid and ready for submission.");
+      form.submit();
+    }
   });
 });

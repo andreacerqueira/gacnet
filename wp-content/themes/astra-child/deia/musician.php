@@ -67,7 +67,7 @@ require get_stylesheet_directory() . '/deia/website.php';
 function deia_enqueue_custom_admin_scripts() {
     if (current_user_can('musician')) {
         // Enqueue jQuery Validate from CDN
-        wp_enqueue_script('jquery-validate', 'https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.3/jquery.validate.min.js', array('jquery'), '1.19.3', true);
+        wp_enqueue_script('jquery-validate', 'https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.5/jquery.validate.min.js', array('jquery'), '1.19.5', true);
         
         // Enqueue WordPress media scripts
         wp_enqueue_media();
