@@ -197,8 +197,12 @@ div#home-page {
   color: var(--ast-global-color-5);
 }
 
-.ast-header-break-point .ast-builder-menu-1 .main-header-menu .menu-item > .menu-link:hover {
+.ast-builder-menu-1 .main-header-menu .menu-item > .menu-link:hover {
   color: var(--ast-global-color-0);
+}
+
+.ast-builder-menu-1 .main-header-menu ul.sub-menu .menu-item > .menu-link .menu-text:hover {
+  border-bottom: solid 1px var(--ast-global-color-0);
 }
 
 .ast-header-break-point .ast-builder-menu-1 .main-header-menu .menu-item.current-menu-item > .menu-link,
