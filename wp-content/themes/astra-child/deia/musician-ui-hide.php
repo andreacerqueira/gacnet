@@ -9,6 +9,19 @@ function deia_add_body_class_for_musicians($classes) {
 add_filter('admin_body_class', 'deia_add_body_class_for_musicians');
 
 
+// Remove dashboard widgets for musicians
+function custom_remove_dashboard_widgets() {
+    // Check if the current user is a musician
+    if (current_user_can('musician')) {
+        // Remove all default dashboard widgets
+        global $wp_meta_boxes;
+        $wp_meta_boxes['dashboard']['normal']['core'] = array();
+        $wp_meta_boxes['dashboard']['side']['core'] = array();
+    }
+}
+add_action('wp_dashboard_setup', 'custom_remove_dashboard_widgets');
+
+
 // Diable items from Admin TOP bar
 function deia_customize_admin_bar($wp_admin_bar) {
     if (current_user_can('musician')) {

@@ -42,7 +42,7 @@ require get_stylesheet_directory() . '/deia/musician-ui-hide.php';
 /**
 * Redirect musicians to their custom page upon login --------------------------------------
 */
-// require get_stylesheet_directory() . '/deia/musician-redirect.php';
+require get_stylesheet_directory() . '/deia/musician-redirect.php';
 
 
 /**
@@ -83,10 +83,30 @@ function deia_enqueue_custom_admin_scripts() {
         // ));
     }
 
-    // Enqueue custom admin styles for ALL type of users
+    // Enqueue custom admin styles for ALL types of users
     wp_enqueue_style('deia-custom-admin-styles', get_stylesheet_directory_uri() . '/deia/deia-admin.css');
 }
 add_action('admin_enqueue_scripts', 'deia_enqueue_custom_admin_scripts');
+
+
+// Change Login's page Logo
+if( !function_exists( 'custom_login_logo' ) ){
+    function custom_login_logo() {
+        echo '<style>
+            h1 a { background-image: url("http://gacnetca.com/wp-content/uploads/2024/02/gacnet-logo-3-light.png") !important; height: 100px !important; }
+        </style>';
+    }
+    add_action( 'login_head', 'custom_login_logo' );
+}
+
+
+// Change Login's page URL
+if( ! function_exists( 'custom_login_logo_url' ) ){
+    add_filter( 'login_headerurl', 'custom_login_logo_url' );
+    function custom_login_logo_url() {
+        return 'https://gacnetca.com';
+    }
+}
 
 
 // Add support for a custom image size
