@@ -11,53 +11,66 @@ jQuery(document).ready(function ($) {
   // JavaScript for media uploader ----------------------------------------------
 
   // Function to initialize media library with 'select' frame type
-  function initializeMediaLibrary(frameTitle, imagePreviewSelector, hiddenInputSelector) {
-    // Check if wp object and media library frames are defined
-    if (typeof wp !== 'undefined' && wp.media && wp.media.frames) {
-      // Clear previous file frame instance if exists
-      wp.media.frames.file_frame = undefined;
-
-      // Reinitialize media library with slight delay to clear previous instance
-      setTimeout(function() {
-        wp.media.frames.file_frame = wp.media({
-          title: frameTitle,
-          frame: 'select', // Force the Upload Files tab to be selected
-          multiple: false
-        });
-
-        // When an image is selected, run a callback.
-        wp.media.frames.file_frame.on('select', function() {
-          var attachment = wp.media.frames.file_frame.state().get('selection').first().toJSON();
-          $(hiddenInputSelector).val(attachment.id);
-          $(imagePreviewSelector).attr('src', attachment.url);
-        });
-
-        // Open the media uploader.
-        wp.media.frames.file_frame.open();
-      }, 100); // Adjust delay as needed
-    } else {
-      console.error('WordPress media or frames not properly initialized.');
-    }
+  function initializeMediaLibrary() {
+    wp.media.view.Settings.Gallery = {
+      ...wp.media.view.Settings.Gallery,
+      frame: 'select'
+    };
+    wp.media.view.Settings.Post = {
+      ...wp.media.view.Settings.Post,
+      frame: 'select'
+    };
   }
 
-  // Header upload image click event
+  // Initialize media library on document ready
+  initializeMediaLibrary();
+
+  // Function to open media uploader with specified frame title and upload tab selected
+  function openMediaUploader(frameTitle, mediaUploader) {
+    // Clear session storage
+    sessionStorage.clear();
+
+    // If the media frame already exists, reopen it.
+    if (mediaUploader) {
+      mediaUploader.open();
+      return;
+    }
+
+    // Create the media frame.
+    mediaUploader = wp.media.frames.file_frame = wp.media({
+      title: frameTitle,
+      frame: 'select', // Force the Upload Files tab to be selected
+      multiple: false
+    });
+
+    // When an image is selected, run a callback.
+    mediaUploader.on('select', function() {
+      var attachment = mediaUploader.state().get('selection').first().toJSON();
+      if (frameTitle === 'Choose/Upload Header Image') {
+        $('#musician_header_image').val(attachment.id);
+        $('#image-preview-header').attr('src', attachment.url);
+      } else if (frameTitle === 'Choose/Upload Musician Image') {
+        $('#musician_image').val(attachment.id);
+        $('#image-preview-musician').attr('src', attachment.url);
+      }
+    });
+
+    // Open the media uploader.
+    mediaUploader.open();
+  }
+
+  // Header upload image
+  var mediaHeaderUploader;
   $('#upload_musician_header_image_button').click(function(e) {
     e.preventDefault();
-    initializeMediaLibrary(
-      'Choose/Upload Header Image',
-      '#image-preview-header',
-      '#musician_header_image'
-    );
+    openMediaUploader('Choose/Upload Header Image', mediaHeaderUploader);
   });
 
-  // Band upload image click event
+  // Band upload image
+  var mediaUploader;
   $('#upload_musician_image_button').click(function(e) {
     e.preventDefault();
-    initializeMediaLibrary(
-      'Choose/Upload Musician Image',
-      '#image-preview-musician',
-      '#musician_image'
-    );
+    openMediaUploader('Choose/Upload Musician Image', mediaUploader);
   });
 
 
