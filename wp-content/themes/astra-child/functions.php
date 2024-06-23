@@ -38,12 +38,31 @@ add_action('wp_enqueue_scripts', 'child_enqueue_styles', 15);
 
 
 /**
- * CONTACT US MODAL - Enqueue script for modal functionality -------------------------------------------------------------
+ * JS - Import JS --------------------------------------------------------------------------------------------------------
+ */
+function child_enqueue_scripts() {
+    // Enqueue jQuery (WordPress includes jQuery by default, but this ensures it is loaded)
+    wp_enqueue_script('jquery');
+
+    // Enqueue FancyBox CSS
+    wp_enqueue_style( 'fancybox-css', 'https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.css' );
+
+    // Enqueue FancyBox JS
+    wp_enqueue_script( 'fancybox-js', 'https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.js', array('jquery'), null, true );
+
+    // Enqueue Main JS
+    wp_enqueue_script('custom-js', get_stylesheet_directory_uri() . '/deia.js', array('jquery', 'fancybox-js'), null, true);
+}
+add_action('wp_enqueue_scripts', 'child_enqueue_scripts');
+
+
+/**
+ * CONTACT US MODAL - Enqueue script for modal functionality ------------------------------------------------------------
  */
 // Enqueue script for modal functionality
 function deia_modal_scripts() {
     // Enqueue jQuery if it's not already loaded
-    wp_enqueue_script('jquery');
+    // wp_enqueue_script('jquery');
 
     $contact_us_page_id = 804;
 

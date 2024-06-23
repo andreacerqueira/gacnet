@@ -22,11 +22,45 @@ get_header(); ?>
 
 	<div id="primary" <?php astra_primary_class(); ?>>
 
-		<?php astra_primary_content_top(); ?>
+		<h1 class="page-title line"><?php echo get_the_title(); ?></h1>
 
-		<?php astra_content_loop(); ?>
+		<?php
+		$categories = get_the_category();
+		if ( ! empty( $categories ) ) {
+			echo '<h2 class="category-title">';
+			foreach ( $categories as $category ) {
+				echo '<a href="' . esc_url( get_category_link( $category->term_id ) ) . '">' . esc_html( $category->name ) . '</a> ';
+			}
+			echo '</h2>';
+		}
+		?>
 
-		<?php astra_primary_content_bottom(); ?>
+		<div class="deia-single" id="post-<?php the_ID(); ?>" <?php post_class(); ?>>
+			<?php
+			while ( have_posts() ) :
+				the_post();
+				?>
+
+					<?php if ( has_post_thumbnail() ) : ?>
+						<div class="image">
+							<a href="<?php echo wp_get_attachment_url( get_post_thumbnail_id() ); ?>" data-fancybox="gallery" data-caption="<?php the_title_attribute(); ?>">
+								<?php the_post_thumbnail('medium_large'); ?>
+							</a>
+						</div><!-- .image -->
+					<?php endif; ?>
+
+					<div class="entry-content clear" <?php echo astra_attr( 'entry-content' ); ?>>
+
+						<?php the_content(); ?>
+
+					</div><!-- .entry-content -->
+
+					<?php astra_edit_post_link( 'Edit this post' ); ?>
+
+				<?php
+			endwhile;
+			?>
+		</div><!-- .deia-single -->
 
 	</div><!-- #primary -->
 

@@ -10,6 +10,8 @@ Text Domain: astra-child
 Template: astra
 */
 
+/* use .ast-header-break-point from astra theme when applying css to break point instead of declaring over and over again */
+
 :root {
   --ast-global-color-0: #fbc051;
   --ast-global-color-1: #0e8ec1;
@@ -137,6 +139,21 @@ textarea:focus {
   color: var(--ast-global-color-2) !important;
 }
 
+div#primary {
+  margin: 0 !important;
+  padding: 2rem !important;
+}
+
+/* remove the extra padding only from home */
+div#home-page {
+  margin: -2rem;
+}
+
+/* Add this CSS to your stylesheet */
+.hide-on-front-page {
+  display: none;
+}
+
 .site-header.ast-header-slide {
   background-color: none;
 }
@@ -176,17 +193,18 @@ textarea:focus {
   border: none;
 }
 
-.ast-builder-menu-1 .main-header-menu .menu-item > .menu-link {
+.ast-header-break-point .ast-builder-menu-1 .main-header-menu .menu-item > .menu-link {
   color: var(--ast-global-color-5);
 }
 
-.ast-builder-menu-1 .menu-item.current-menu-item > .menu-link,
-.ast-builder-menu-1
-  .inline-on-mobile
-  .menu-item.current-menu-item
-  > .ast-menu-toggle,
-.ast-builder-menu-1 .current-menu-ancestor > .menu-link,
-.ast-builder-menu-1 .current-menu-ancestor > .ast-menu-toggle {
+.ast-header-break-point .ast-builder-menu-1 .main-header-menu .menu-item > .menu-link:hover {
+  color: var(--ast-global-color-0);
+}
+
+.ast-header-break-point .ast-builder-menu-1 .main-header-menu .menu-item.current-menu-item > .menu-link,
+/* .ast-header-break-point .ast-builder-menu-1 .inline-on-mobile .menu-item.current-menu-item > .ast-menu-toggle, */
+.ast-header-break-point .ast-builder-menu-1 .main-header-menu .current-menu-ancestor > .menu-link,
+.ast-header-break-point .ast-builder-menu-1 .main-header-menu .current-menu-ancestor > .ast-menu-toggle {
   color: var(--ast-global-color-0);
 }
 
@@ -197,23 +215,65 @@ textarea:focus {
   border-radius: 10px;
 }
 
-/* div#content {
-  padding: 2rem !important;
-} */
-
-div#primary {
-  margin: 0 !important;
-  padding: 2rem !important;
+.main-header-menu .sub-menu {
+  width: 130px;
+  background-color: var(--ast-global-color-9);
 }
 
-/* remove the extra padding only from home */
-div#home-page {
-  margin: -2rem;
+.ast-builder-menu-1 .menu-item > .menu-link {
+  color: var(--ast-global-color-5);
 }
 
-/* Add this CSS to your stylesheet */
-.hide-on-front-page {
+.ast-builder-menu-1 .menu-item.current-menu-item > .menu-link,
+.ast-builder-menu-1 .inline-on-mobile .menu-item.current-menu-item > .ast-menu-toggle,
+.ast-builder-menu-1 .current-menu-ancestor > .menu-link,
+.ast-builder-menu-1 .current-menu-ancestor > .ast-menu-toggle {
+  color: var(--ast-global-color-0);
+}
+
+.ast-header-break-point .main-header-menu .sub-menu {
+  width: auto;
+  background-color: var(--ast-global-color-9);
+}
+
+.ast-header-break-point .menu-item:hover > .ast-menu-toggle,
+.ast-header-break-point .menu-item.menu-item-has-children > .ast-menu-toggle {
+  color: var(--ast-global-color-5);
+  height: 70px;
+}
+
+.ast-header-break-point .ast-icon.icon-arrow svg {
+  margin: 0;
+}
+
+.ast-header-break-point .menu-item > .menu-link {
+  font-size: 1.4rem;
+}
+
+#ast-mobile-header .content-align-flex-start {
+  max-height: 100vh;
+  height: calc(100vh - 84px);
+}
+
+.ast-header-break-point .ast-primary-header-bar {
+  height: 84px;
+}
+
+.menu-item.no-hover:hover > .menu-link:before {
   display: none;
+}
+
+.menu-item > .main-header-menu .sub-menu {
+  display: none;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.3s ease-in-out, visibility 0.3s ease-in-out;
+}
+
+.menu-item > .main-header-menu .sub-menu.submenu-open {
+  display: block;
+  opacity: 1;
+  visibility: visible;
 }
 
 /* Deia Modal -------------------------------------------- */
@@ -268,12 +328,12 @@ div#home-page {
   cursor: pointer;
 }
 
-.deia-open-modal.menu-item {
+/* .deia-open-modal.menu-item {
   padding-left: 10px;
   line-height: normal;
-}
+} */
 
-.deia-open-modal a.menu-link {
+/* .deia-open-modal a.menu-link {
   color: var(--ast-global-color-2);
   border-color: var(--ast-global-color-1);
   border-radius: 50px;
@@ -294,7 +354,7 @@ div#home-page {
   border-color: var(--ast-global-color-0);
   background-color: var(--ast-global-color-0);
   transition: all 200ms linear;
-}
+} */
 
 .deia-open-modal.menu-item:hover > .menu-link:before {
   display: none;
@@ -422,7 +482,59 @@ article.deia-cat-list .right-content .share-icons a img {
 }
 /* Deia Musicians Single Page ------------------------------- */
 
-/* Deia Musicians Catefgory Page ---------------------------- */
+/* Deia Single Page ----------------------------------------- */
+.deia-single {
+  display: flex;
+  flex-direction: row;
+  gap: 2rem;
+  border-radius: 0.5rem;
+  padding: 1.5rem;
+  margin-bottom: 1rem;
+  background-color: rgba(68, 68, 68, 0.3);
+  box-shadow: 7px 7px 10px rgba(0, 0, 0, 0.5);
+}
+
+.deia-single .image {
+  flex: 0 0 20rem;
+  width: 20rem;
+  height: fit-content;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 4px 4px 8px rgba(0, 0, 0, 0.5);
+}
+
+h2.category-title {
+  display: flex;
+  flex-direction: row;
+  gap: 1rem;
+  margin: -1rem 0 3rem 0;
+  font-size: 1rem;
+  color: var(--ast-global-color-0);
+}
+
+h2.category-title a {
+  border-right: 2px solid var(--ast-global-color-9);
+  padding-right: 1rem;
+  font-style: italic;
+}
+
+h2.category-title a:last-child {
+  border-right: none;
+  padding-right: 0;
+}
+
+.ast-header-break-point .deia-single {
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.ast-header-break-point .deia-single .image {
+  flex: 0;
+  width: 100%;
+}
+/* Deia Single Page ----------------------------------------- */
+
+/* Deia Musicians Category Page ----------------------------- */
 .heading-search {
   display: flex;
   flex-direction: row;
@@ -484,7 +596,7 @@ article.deia-cat-list .right-content .share-icons a img {
     flex-direction: column;
   }
 }
-/* Deia Musicians Catefgory Page ---------------------------- */
+/* Deia Musicians Category Page ---------------------------- */
 
 @media (max-width: 920px) {
   .ast-separate-container .ast-article-post,
@@ -517,11 +629,6 @@ article.deia-cat-list .right-content .share-icons a img {
   /* remove the extra padding only from home */
   div#home-page {
     margin: -1rem;
-  }
-
-  .deia-open-modal a.menu-link {
-    border: unset !important;
-    background-color: unset !important;
   }
 
   .deia-open-modal.menu-item {
@@ -574,11 +681,3 @@ article.deia-cat-list .right-content .share-icons a img {
     padding: 8rem 1rem 1rem 1rem;
   }
 }
-
-/* @media (min-width: 993px) {
-  .ast-separate-container #primary {
-    margin: 2.25rem auto 4em auto;
-    padding: 0;
-    max-width: 1140px;
-  }
-} */

@@ -58,17 +58,3 @@ get_header(); ?>
 	</div><!-- #primary -->
 
 <?php get_footer(); ?>
-
-<style>
-    /* .top-info {
-        max-width: 1140px;
-        margin: 0 auto;
-    }
-    #masthead {
-        position: unset !important;
-        left: 0 !important;
-        right: 0 !important;
-    } */
-
-    /* for unknown reason PODCAST page is getting this style and breaking  */
-</style>

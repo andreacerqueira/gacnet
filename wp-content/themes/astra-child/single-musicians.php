@@ -36,7 +36,8 @@ get_header(); ?>
             $bio = get_post_meta(get_the_ID(), 'musician_bio', true);
             $player = get_post_meta(get_the_ID(), 'musician_player', true);
             $image = get_post_meta(get_the_ID(), 'musician_image', true);
-            $musician_image_url = $image ? wp_get_attachment_image_url($image, 'full') : '';
+            $musician_image_url = $image ? wp_get_attachment_image_url($image, 'medium_large') : '';
+            $musician_image_full_url = $image ? wp_get_attachment_image_url($image, 'full') : '';
 
             // Display the content (don't show this, it's the main content)
             // the_content();
@@ -44,7 +45,11 @@ get_header(); ?>
             <div class="musician-details">
                 <div class="left">
                     <?php if ( $image ) : ?>
-                        <div class="image"><img src="<?php echo esc_url( $musician_image_url ); ?>"/></div>
+                        <div class="image">
+                            <a href="<?php echo esc_url( $musician_image_full_url ); ?>" data-fancybox="gallery" data-caption="<?php the_title_attribute(); ?>">
+                                <img src="<?php echo esc_url( $musician_image_url ); ?>"/>
+							</a>
+                        </div>
                     <?php endif; ?>
                     <ul class="details">
                         <?php if ( $website ) : ?>
