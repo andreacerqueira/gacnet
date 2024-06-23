@@ -190,15 +190,20 @@ textarea:focus {
   color: var(--ast-global-color-0);
 }
 
-div#content {
-  padding: 2rem;
-}
-
 .ast-separate-container .ast-article-post,
 .ast-separate-container .ast-article-single,
 .ast-separate-container .comment-respond {
   padding: 4em 4em;
   border-radius: 10px;
+}
+
+/* div#content {
+  padding: 2rem !important;
+} */
+
+div#primary {
+  margin: 0 !important;
+  padding: 2rem !important;
 }
 
 /* remove the extra padding only from home */
@@ -374,7 +379,7 @@ article.deia-cat-list .right-content .share-icons a img {
   display: flex;
   flex-direction: row;
   gap: 5rem;
-  padding: 1rem 0;
+  padding: 0;
 }
 
 .musician-details .left {
@@ -496,8 +501,17 @@ article.deia-cat-list .right-content .share-icons a img {
     position: fixed;
   }
 
+  div#primary {
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+
   div#content {
-    padding: 5rem 1rem 1rem 1rem;
+    padding: 7rem 1rem 1rem 1rem;
+  }
+
+  body.home div#content {
+    padding: 3rem 1rem 1rem 1rem;
   }
 
   /* remove the extra padding only from home */
@@ -557,7 +571,7 @@ article.deia-cat-list .right-content .share-icons a img {
 
 @media (min-width: 768px) and (max-width: 920px) {
   div#content {
-    padding: 7rem 1rem 1rem 1rem;
+    padding: 8rem 1rem 1rem 1rem;
   }
 }
 

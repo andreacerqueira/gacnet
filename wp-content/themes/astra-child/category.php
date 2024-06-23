@@ -47,14 +47,6 @@ get_header(); ?>
 
                     </a><!-- .entry-content -->
 
-                    <div class="share-icons">
-                        <a href="https://twitter.com/intent/tweet?url=<?php urlencode('https://www.youtube.com/watch?v=' . $videoId); ?>&text=<?php urlencode($title); ?>" target="_blank"><img src="<?php echo get_template_directory_uri(); ?>-child/assets/images/icon-twitter.svg"/></a>
-                        <a href="https://www.facebook.com/sharer/sharer.php?u=<?php urlencode('https://www.youtube.com/watch?v=' . $videoId); ?>" target="_blank"><img src="<?php echo get_template_directory_uri(); ?>-child/assets/images/icon-facebook.svg"/></a>
-                        <a href="https://www.tiktok.com/share/video/<?php $videoId; ?>" target="_blank"><img src="<?php echo get_template_directory_uri(); ?>-child/assets/images/icon-tiktok.svg"/></a>
-                        <a href="https://wa.me/?text=<?php urlencode('Check out this video: https://www.youtube.com/watch?v=' . $videoId); ?>" target="_blank"><img src="<?php echo get_template_directory_uri(); ?>-child/assets/images/icon-whatsapp.svg"/></a>
-                        <!-- <a href="instagram' . urlencode('https://www.youtube.com/watch?v=' . $videoId) . '" target="_blank"><img src="<?php //echo get_template_directory_uri(); ?>-child/assets/images/icon-instagram.svg"/></a> -->
-                    </div><!-- .share-icons -->
-
                 </div><!-- .right-content -->
 
 			</article><!-- #post-## -->
