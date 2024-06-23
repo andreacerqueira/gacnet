@@ -1,47 +1,34 @@
-// JavaScript for media uploader ------------------------------------------------
 jQuery(document).ready(function ($) {
+
   // Preventing dragging and dropping things around -----------------------------
   $("#poststuff").find(".meta-box-sortables").removeClass("meta-box-sortables");
-
-  // Header upload image --------------------------------------------------------
-  var mediaHeaderUploader;
-  $("#upload_musician_header_image_button").click(function (e) {
-    e.preventDefault();
-
-    // If the media frame already exists, reopen it.
-    if (mediaHeaderUploader) {
-      mediaHeaderUploader.open();
-      return;
-    }
-
-    // Create the media frame.
-    mediaHeaderUploader = wp.media.frames.file_frame = wp.media({
-      title: "Choose/Upload Header Image",
-      multiple: false,
-    });
-
-    // When an image is selected, run a callback.
-    mediaHeaderUploader.on("select", function () {
-      var attachment = mediaHeaderUploader
-        .state()
-        .get("selection")
-        .first()
-        .toJSON();
-      $("#musician_header_image").val(attachment.id);
-      $("#image-preview-header").attr("src", attachment.url);
-    });
-
-    // Open the media uploader.
-    mediaHeaderUploader.open();
-  });
 
   // Remove the 2 columns layout ------------------------------------------------
   $('.role-musician #post-body').removeClass('columns-2').addClass('columns-1');
 
-  // Band upload image ----------------------------------------------------------
-  var mediaUploader;
-  $("#upload_musician_image_button").click(function (e) {
-    e.preventDefault();
+
+
+  // JavaScript for media uploader ----------------------------------------------
+
+  // Function to initialize media library with 'select' frame type
+  function initializeMediaLibrary() {
+    wp.media.view.Settings.Gallery = {
+      ...wp.media.view.Settings.Gallery,
+      frame: 'select'
+    };
+    wp.media.view.Settings.Post = {
+      ...wp.media.view.Settings.Post,
+      frame: 'select'
+    };
+  }
+
+  // Initialize media library on document ready
+  initializeMediaLibrary();
+
+  // Function to open media uploader with specified frame title and upload tab selected
+  function openMediaUploader(frameTitle, mediaUploader) {
+    // Clear session storage
+    sessionStorage.clear();
 
     // If the media frame already exists, reopen it.
     if (mediaUploader) {
@@ -51,26 +38,48 @@ jQuery(document).ready(function ($) {
 
     // Create the media frame.
     mediaUploader = wp.media.frames.file_frame = wp.media({
-      title: "Choose/Upload Musician Image",
-      multiple: false,
+      title: frameTitle,
+      frame: 'select', // Force the Upload Files tab to be selected
+      multiple: false
     });
 
     // When an image is selected, run a callback.
-    mediaUploader.on("select", function () {
-      var attachment = mediaUploader.state().get("selection").first().toJSON();
-      $("#musician_image").val(attachment.id);
-      $("#image-preview-musician").attr("src", attachment.url);
+    mediaUploader.on('select', function() {
+      var attachment = mediaUploader.state().get('selection').first().toJSON();
+      if (frameTitle === 'Choose/Upload Header Image') {
+        $('#musician_header_image').val(attachment.id);
+        $('#image-preview-header').attr('src', attachment.url);
+      } else if (frameTitle === 'Choose/Upload Musician Image') {
+        $('#musician_image').val(attachment.id);
+        $('#image-preview-musician').attr('src', attachment.url);
+      }
     });
 
     // Open the media uploader.
     mediaUploader.open();
+  }
+
+  // Header upload image
+  var mediaHeaderUploader;
+  $('#upload_musician_header_image_button').click(function(e) {
+    e.preventDefault();
+    openMediaUploader('Choose/Upload Header Image', mediaHeaderUploader);
   });
+
+  // Band upload image
+  var mediaUploader;
+  $('#upload_musician_image_button').click(function(e) {
+    e.preventDefault();
+    openMediaUploader('Choose/Upload Musician Image', mediaUploader);
+  });
+
+
 
   // Validation -----------------------------------------------------------------
 
   // Custom validation method for player embed code
   $.validator.addMethod("validPlayerEmbed", function(value, element) {
-    console.log("Validating player embed code:", value);
+    // console.log("Validating player embed code:", value);
     // Simple validation to check if the value contains an iframe
     const isValid = this.optional(element) || /<iframe.*<\/iframe>/.test(value);
     // console.log("Validation result for player embed:", isValid);
